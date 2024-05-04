@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RecitativosCountRepository extends JpaRepository<RecitativosCount, Long> {
     public List<RecitativosCount> findByYearAndMonth(String year, String month);
+
+    public RecitativosCount findByYearAndMonthAndDay(String year, String month, String day);
 }
