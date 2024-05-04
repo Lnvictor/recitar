@@ -11,70 +11,114 @@
             var month = document.getElementById('inputGroupDateMes').value;
             window.location = `/web/ccbrec?year=${year}&month=${month}`;
         }
+
+        function toggleAddCountButton(){
+            var form = document.getElementById("add-count-form");
+            form.style.display = form.style.display == "none" ? "" : "none"; 
+        }
     </script>
 </head>
 <body>
-    <br>
-    <br>
-    <div class="container">
-        <h1 class="display-4 white">Contagens</h1>
 
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupDateAno">Ano</label>
-            </div>
-            <select class="custom-select" id="inputGroupDateAno">
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-            </select>
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupDateMes">Mes</label>
-            </div>
-            <select class="custom-select" id="inputGroupDateMes">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-            <button type="button" class="btn btn-outline-primary" id="dateButton" onclick="javascrpt:selectBoxOnChanges()">P</button>
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Contagem</a>
+    <a class="navbar-brand" href="#" th:text="${username}" ></a>
+</nav>
+<br>
+<div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupDateAno">Ano</label>
         </div>
-        <table class="table table-dark table-striped table-bordered table-hover table-sm ">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Data</th>
-                <th scope="col">Meninos</th>
-                <th scope="col">Meninas</th>
-                <th scope="col">Moços</th>
-                <th scope="col">Moças</th>
-                <th scope="col">Individuais</th>
-                <th scope="col">Total Geral</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr class="" th:each="dto: ${counts}">
-                    <td th:text="${dto.getFormattedDate()}"></td>
-                    <td th:text="${dto.getBoys()}"></td>
-                    <td th:text="${dto.getGirls()}"></td>
-                    <td th:text="${dto.getYoungBoys()}"></td>
-                    <td th:text="${dto.getYoungGirls()}"></td>
-                    <td th:text="${dto.getIndividuals()}"></td>
-                    <td th:text="${dto.getTotal()}"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <br>
-        <br>
-        <button class="btn btn-secondary">Adicionar Contagem</button>
+        <select class="custom-select" id="inputGroupDateAno">
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupDateMes">Mes</label>
+        </div>
+        <select class="custom-select" id="inputGroupDateMes">
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <button type="button" class="btn btn-outline-primary" id="dateButton" onclick="javascrpt:selectBoxOnChanges()">
+            P
+        </button>
     </div>
+    <table class="table table-dark table-striped table-bordered table-hover table-sm ">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Meninos</th>
+            <th scope="col">Meninas</th>
+            <th scope="col">Moços</th>
+            <th scope="col">Moças</th>
+            <th scope="col">Individuais</th>
+            <th scope="col">Total Geral</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="" th:each="dto: ${counts}">
+            <td th:text="${dto.getDate()}"></td>
+            <td th:text="${dto.getBoys()}"></td>
+            <td th:text="${dto.getGirls()}"></td>
+            <td th:text="${dto.getYoungBoys()}"></td>
+            <td th:text="${dto.getYoungGirls()}"></td>
+            <td th:text="${dto.getIndividuals()}"></td>
+            <td th:text="${dto.getTotal()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <button class="btn btn-secondary" onclick="toggleAddCountButton()">Adicionar Contagem</button>
+</div>
+<div class="container">
+    <br>
+    <form style="display: none;" id="add-count-form" action="#" th:action="@{/web/ccbrec/addNewCount}"
+          th:object="${formDTO}" method="POST">
+        <div class="row">
+            <div class="col">
+                <label for="date">Dia da reunião</label>
+                <input type="date" id="date" name="date" class="form-control" placeholder="Data" th:field="*{date}"
+                       value="">
+                <br>
+                <label for="boys">Meninos</label>
+                <input type="text" id="boys" name="boys" class="form-control" placeholder="Meninos" th:field="*{boys}">
+                <br>
+                <label for="girls">Meninas</label>
+                <input type="text" id="girls" name="girls" class="form-control" placeholder="Meninas"
+                       th:field="*{girls}">
+            </div>
+
+            <div class="col">
+                <label for="boys">Moças</label>
+                <input type="text" id="youngGirls" name="youngGirls" class="form-control" placeholder="Moças"
+                       th:field="*{youngGirls}">
+                <br>
+                <label for="boys">Moços</label>
+                <input type="text" id="youngBoys" name="youngBoys" class="form-control" placeholder="Moços"
+                       th:field="*{youngBoys}">
+                <br>
+                <label for="boys">Individuais</label>
+                <input type="text" id="individuals" name="individuals" class="form-control" placeholder="Individuais"
+                       th:field="*{individuals}">
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit">Salvar</button>
+    </form>
+</div>
 </body>
 </html>
