@@ -1,44 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="https://congregacaocristanobrasil.org.br/assets/images/logo-ccb-light.png" type="image/png">
-    <title>Contagem Recitativos</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script>
-        function selectBoxOnChanges(){
-            var year = document.getElementById('inputGroupDateAno').value;
-            var month = document.getElementById('inputGroupDateMes').value;
-            window.location = `/web/ccbrec?year=${year}&month=${month}`;
-        }
 
-        function toggleAddCountButton(){
-            var form = document.getElementById("add-count-form");
-            form.style.display = form.style.display == "none" ? "" : "none"; 
-        }
-    </script>
-</head>
+<head th:replace="~{common :: head}"></head>
+
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-secondary">
-    <a class="navbar-brand" href="#">
-        <img src="https://congregacaocristanobrasil.org.br/assets/images/logo-ccb-light.png"  height="50" class="d-inline-block align-top">
-    </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Contagem</span></a>
-            </li>
-
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Reunião de Auxiliares</a>
-            </li>
-        </ul>
-    </div>
-    <a class="navbar-brand" href="#" th:text="${username}" ></a>
-</nav>
+<nav th:replace="~{common :: nav}"></nav>
 <br>
 <div class="container">
     <div class="input-group mb-3">
@@ -83,6 +49,7 @@
             <th scope="col">Moças</th>
             <th scope="col">Individuais</th>
             <th scope="col">Total Geral</th>
+            <th scope="col-light">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -94,6 +61,19 @@
             <td contenteditable="true" th:text="${dto.getYoungGirls()}"></td>
             <td contenteditable="true" th:text="${dto.getIndividuals()}"></td>
             <td contenteditable="true" th:text="${dto.getTotal()}"></td>
+            <td>
+                <button class="btn btn-danger" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                </button>
+                <button class="btn btn-success" th:onclick="'editCount()'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z"/>
+                    </svg>
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -135,7 +115,7 @@
             </div>
         </div>
         <br>
-        <button class="btn btn-primary" type="submit">Salvar</button>
+        <button id="upsert-submit" class="btn btn-primary" type="submit">Salvar</button>
     </form>
 </div>
 </body>
