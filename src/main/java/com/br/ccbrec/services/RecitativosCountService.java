@@ -7,9 +7,7 @@ import com.br.ccbrec.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is responsible for query counts from database ans send it to views
@@ -31,6 +29,13 @@ public class RecitativosCountService {
                 }
         );
 
+        Collections.sort(output, new Comparator<RecitativosCountDTO>(){
+            @Override
+            public int compare(RecitativosCountDTO dto1, RecitativosCountDTO dto2){
+                return dto1.getDate().compareTo(dto2.getDate());
+            }
+        });
+
         return output;
     }
 
@@ -40,7 +45,8 @@ public class RecitativosCountService {
                 splitedDate.get("year"));
 
         if(dateExists){
-            throw new Exception("date already exists");
+            this.udpateCount(count);
+            return count.toEntity();
         }
 
         // checking if day selected is sunday, idk how to do this
@@ -58,5 +64,24 @@ public class RecitativosCountService {
 
         RecitativosCount count = this.repository.findByYearAndMonthAndDay(year, month, day);
         return count != null;
+    }
+
+    public void udpateCount(RecitativosCountDTO dto) throws Exception {
+        Map<String, String> splitedDate = DateUtils.splitRecitativosDate(dto.getDate());
+        RecitativosCount count = this.repository.findByYearAndMonthAndDay(
+                splitedDate.get("year"), splitedDate.get("month"), splitedDate.get("day"));
+
+        if (count == null){
+            throw new Exception("User does not exists");
+        }
+
+        count.setBoys(dto.getBoys());
+        count.setGirls(dto.getGirls());
+        count.setYoungBoys(dto.getYoungBoys());
+        count.setYoungGirls(dto.getYoungGirls());
+        count.setIndividuals(dto.getIndividuals());
+
+        this.repository.save(count);
+        this.repository.save(count);
     }
 }
