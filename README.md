@@ -21,8 +21,10 @@ bem como editar e deletar contagens passadas.
 
 - Acesso por roles (Leitura, escrita, admin, etc...)
 - Registrar quem atendeu o culto
-- Deletar contagens
 - Tela de perfil
+- Implementar validação para add contagens somente aos domingos(visto que as reuniões ocorrem neste dia)
+- Registrar reuniões de auxiliares (PARTES DE PALAVRA)
+- Implementar CI/CD
 
 ### Bugs conhecidos
 
