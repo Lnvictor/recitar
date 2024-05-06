@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: head}"></head>
+
+<body>
+<nav th:replace="~{common :: nav}"></nav>
+<br>
+<div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupDateAno">Ano</label>
+        </div>
+        <select class="custom-select" id="inputGroupDateAno">
+            <option disabled selected value> -- selecione um ano -- </option>
+            <option id="year2022" value="2022">2022</option>
+            <option id="year2023" value="2023">2023</option>
+            <option id="year2024" value="2024">2024</option>
+        </select>
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupDateMes">Mes</label>
+        </div>
+        <select class="custom-select" id="inputGroupDateMes">
+            <option disabled selected value> -- selecione um mês -- </option>
+            <option id="month01" value="01">01</option>
+            <option id="month02" value="02">02</option>
+            <option id="month03" value="03">03</option>
+            <option id="month04" value="04">04</option>
+            <option id="month05" value="05">05</option>
+            <option id="month06" value="06">06</option>
+            <option id="month07" value="07">07</option>
+            <option id="month08" value="08">08</option>
+            <option id="month09" value="09">09</option>
+            <option id="month10" value="10">10</option>
+            <option id="month11" value="11">11</option>
+            <option id="month12" value="12">12</option>
+        </select>
+        <button type="button" class="btn btn-outline-primary" id="dateButton" onclick="javascrpt:selectBoxOnChanges()">
+            P
+        </button>
+    </div>
+    <table class="table table-dark table-striped table-bordered table-hover table-sm ">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Meninos</th>
+            <th scope="col">Meninas</th>
+            <th scope="col">Moços</th>
+            <th scope="col">Moças</th>
+            <th scope="col">Individuais</th>
+            <th scope="col">Total Geral</th>
+            <th scope="col-light">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="" th:each="dto: ${counts}">
+            <td contenteditable="false" th:text="${dto.getDate()}"></td>
+            <td contenteditable="true" th:text="${dto.getBoys()}"></td>
+            <td contenteditable="true" th:text="${dto.getGirls()}"></td>
+            <td contenteditable="true" th:text="${dto.getYoungBoys()}"></td>
+            <td contenteditable="true" th:text="${dto.getYoungGirls()}"></td>
+            <td contenteditable="true" th:text="${dto.getIndividuals()}"></td>
+            <td contenteditable="true" th:text="${dto.getTotal()}"></td>
+            <td>
+                <a th:href="@{/web/ccbrec/removeCount(date=${dto.date})}">
+                    <button class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                        </svg>
+                    </button>
+                </a>
+                <button class="btn btn-success" th:onclick="'editCount()'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z"/>
+                    </svg>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <button class="btn btn-secondary" onclick="toggleAddCountButton()">Adicionar Contagem</button>
+    <button class="btn btn-success">Salvar</button>
+</div>
+<div class="container">
+    <br>
+    <form style="display: none;" id="add-count-form" action="#" th:action="@{/web/ccbrec/addNewCount}"
+          th:object="${formDTO}" method="POST">
+        <div class="row">
+            <div class="col">
+                <label for="date">Dia da reunião</label>
+                <input type="date" id="date" name="date" class="form-control" placeholder="Data" th:field="*{date}"
+                       value="">
+                <br>
+                <label for="boys">Meninos</label>
+                <input type="text" id="boys" name="boys" class="form-control" placeholder="Meninos" th:field="*{boys}">
+                <br>
+                <label for="girls">Meninas</label>
+                <input type="text" id="girls" name="girls" class="form-control" placeholder="Meninas"
+                       th:field="*{girls}">
+            </div>
+
+            <div class="col">
+                <label for="boys">Moças</label>
+                <input type="text" id="youngGirls" name="youngGirls" class="form-control" placeholder="Moças"
+                       th:field="*{youngGirls}">
+                <br>
+                <label for="boys">Moços</label>
+                <input type="text" id="youngBoys" name="youngBoys" class="form-control" placeholder="Moços"
+                       th:field="*{youngBoys}">
+                <br>
+                <label for="boys">Individuais</label>
+                <input type="text" id="individuals" name="individuals" class="form-control" placeholder="Individuais"
+                       th:field="*{individuals}">
+            </div>
+        </div>
+        <br>
+        <button id="upsert-submit" class="btn btn-primary" type="submit">Salvar</button>
+    </form>
+</div>
+</body>
+</html>
