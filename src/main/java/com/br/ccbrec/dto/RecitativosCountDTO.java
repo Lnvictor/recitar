@@ -2,11 +2,10 @@ package com.br.ccbrec.dto;
 
 import com.br.ccbrec.entities.RecitativosCount;
 import com.br.ccbrec.util.DateUtils;
+import com.br.ccbrec.util.SplitedDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -39,11 +38,11 @@ public class RecitativosCountDTO {
 
     public RecitativosCount toEntity() {
         RecitativosCount entity = new RecitativosCount();
-        Map<String, String> map = DateUtils.splitRecitativosDate(this.date);
+        SplitedDate map = DateUtils.splitRecitativosDate(this.date);
 
-        entity.setYear(map.get("year"));
-        entity.setMonth(map.get("month"));
-        entity.setDay(map.get("day"));
+        entity.setYear(map.getYear());
+        entity.setMonth(map.getMonth());
+        entity.setDay(map.getDay());
 
         entity.setBoys(this.boys);
         entity.setGirls(this.girls);

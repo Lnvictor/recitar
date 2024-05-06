@@ -3,6 +3,8 @@ package com.br.ccbrec.controllers;
 import com.br.ccbrec.dto.RecitativosCountDTO;
 import com.br.ccbrec.entities.RecitativosCount;
 import com.br.ccbrec.services.RecitativosCountService;
+import com.br.ccbrec.util.DateUtils;
+import com.br.ccbrec.util.SplitedDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -35,5 +37,12 @@ public class ContagemController {
         } catch (Exception exception) {
             return "error";
         }
+    }
+
+    @GetMapping("/removeCount")
+    public String removeCount(@RequestParam String date) {
+        SplitedDate splitedDate = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date));
+        this.service.deleteCount(splitedDate);
+        return String.format("redirect:/web/ccbrec?year=%s&month=%s", splitedDate.getYear(), splitedDate.getMonth());
     }
 }
