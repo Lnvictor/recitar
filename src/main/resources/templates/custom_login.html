@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #bfc1f5;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .login-logo {
+          width: 100px;
+          margin-bottom: 20px;
+        }
+
+        .form-control {
+          margin-bottom: 20px;
+        }
+
+        .btn-login {
+          background-color: <div id="0079bf">   </div>;
+          border-color: #0079bf;
+        }
+
+        .btn-login:hover {
+          background-color: #005a85;
+          border-color: #005a85;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="login-container">
+        <img src="https://congregacaocristanobrasil.org.br/assets/images/logo-ccb-light.png" alt="Logo"
+             class="login-logo">
+        <h2>Login</h2>
+        <form method="post" th:action="@{/login}">
+            <div class="form-group">
+                <input type="text" id="username" name="username" class="form-control" placeholder="Usuario">
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Senha">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-login">Login</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

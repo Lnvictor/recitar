@@ -17,9 +17,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(
-                        (requests) -> requests.anyRequest().authenticated()
+                        (requests) -> {
+                            requests.anyRequest().authenticated();
+                        }
                 )
-                .formLogin((form) -> form.permitAll())
+                .formLogin((form) -> {
+                            form.loginPage("/login");
+                            form.permitAll();
+                        }
+                )
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
