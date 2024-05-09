@@ -10,7 +10,16 @@ function toggleAddCountButton(){
 }
 
 function editCount(){
-    var tableRow = event.srcElement.parentElement.parentElement;
+    var tableRow;
+
+    // Here we see a POG made for the case of user clicks on svg instead of button el
+    if (event.srcElement.tagName == 'svg'){
+        tableRow = event.srcElement.parentElement.parentElement.parentElement;
+    }
+    else{
+        tableRow = event.srcElement.parentElement.parentElement;
+    }
+
     var elements = tableRow.getElementsByTagName("td");
     var s = elements[0].textContent.split("/");
     var newDate = `${s[2]}-${s[1]}-${s[0]}`
@@ -32,8 +41,4 @@ function editCount(){
     document.getElementById("individuals").value = obj.individuals;
 
     document.getElementById("add-count-form").submit();
-}
-
-function removeCount(countObj){
-
 }
