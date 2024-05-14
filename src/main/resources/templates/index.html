@@ -49,7 +49,7 @@
             <th scope="col">Moças</th>
             <th scope="col">Individuais</th>
             <th scope="col">Total Geral</th>
-            <th scope="col-light">Actions</th>
+            <th th:if="${mostPrivilege == 'ROLE_ADMIN'}" scope="col-light">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -61,7 +61,7 @@
             <td contenteditable="true" th:text="${dto.getYoungGirls()}"></td>
             <td contenteditable="true" th:text="${dto.getIndividuals()}"></td>
             <td contenteditable="true" th:text="${dto.getTotal()}"></td>
-            <td>
+            <td th:if="${mostPrivilege == 'ROLE_ADMIN'}">
                 <a th:href="@{/web/ccbrec/removeCount(date=${dto.date})}">
                     <button class="btn btn-danger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -81,39 +81,45 @@
     </table>
 
     <br>
-    <button class="btn btn-secondary" onclick="toggleAddCountButton()">Adicionar Contagem</button>
-    <button class="btn btn-success">Salvar</button>
+    <button th:if="${mostPrivilege == 'ROLE_ADMIN'}" class="btn btn-secondary" onclick="toggleAddCountButton()">Adicionar Contagem</button>
 </div>
 <div class="container">
     <br>
-    <form style="display: none;" id="add-count-form" action="#" th:action="@{/web/ccbrec/addNewCount}"
-          th:object="${formDTO}" method="POST">
+    <form th:style="|display: ${isFormVisible}|" id="add-count-form" action="#" th:action="@{/web/ccbrec/addNewCount}"
+          th:object="${recitativosCountDTO}" method="POST">
         <div class="row">
             <div class="col">
                 <label for="date">Dia da reunião</label>
-                <input type="date" id="date" name="date" class="form-control" placeholder="Data" th:field="*{date}"
-                       value="">
+                <input type="date" id="date" name="date" class="form-control" placeholder="Data"
+                       th:errorclass="is-invalid" th:field="*{date}">
+                <div class="invalid-feedback" th:errors="*{date}"></div>
                 <br>
                 <label for="boys">Meninos</label>
-                <input type="text" id="boys" name="boys" class="form-control" placeholder="Meninos" th:field="*{boys}">
+                <input type="number" id="boys" name="boys" class="form-control" placeholder="Meninos"
+                       th:errorclass="is-invalid" th:field="*{boys}">
+                <div class="invalid-feedback" th:errors="*{boys}"></div>
                 <br>
                 <label for="girls">Meninas</label>
-                <input type="text" id="girls" name="girls" class="form-control" placeholder="Meninas"
-                       th:field="*{girls}">
+                <input type="number" id="girls" name="girls" class="form-control" placeholder="Meninas"
+                       th:errorclass="is-invalid" th:field="*{girls}">
+                <div class="invalid-feedback" th:errors="*{girls}"></div>
             </div>
 
             <div class="col">
                 <label for="boys">Moças</label>
-                <input type="text" id="youngGirls" name="youngGirls" class="form-control" placeholder="Moças"
-                       th:field="*{youngGirls}">
+                <input type="number" id="youngGirls" name="youngGirls" class="form-control" placeholder="Moças"
+                       th:errorclass="is-invalid" th:field="*{youngGirls}" value="">
+                <div class="invalid-feedback" th:errors="*{youngGirls}"></div>
                 <br>
                 <label for="boys">Moços</label>
-                <input type="text" id="youngBoys" name="youngBoys" class="form-control" placeholder="Moços"
-                       th:field="*{youngBoys}">
+                <input type="number" id="youngBoys" name="youngBoys" class="form-control" placeholder="Moços"
+                       th:errorclass="is-invalid" th:field="*{youngBoys}" value="">
+                <div class="invalid-feedback" th:errors="*{youngBoys}"></div>
                 <br>
                 <label for="boys">Individuais</label>
-                <input type="text" id="individuals" name="individuals" class="form-control" placeholder="Individuais"
-                       th:field="*{individuals}">
+                <input type="number" id="individuals" name="individuals" class="form-control" placeholder="Individuais"
+                       th:errorclass="is-invalid" th:field="*{individuals}">
+                <div class="invalid-feedback" th:errors="*{individuals}"></div>
             </div>
         </div>
         <br>
