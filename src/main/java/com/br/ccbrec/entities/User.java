@@ -27,9 +27,13 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @ManyToMany
+    @JoinTable(name = "user_roles")
+    private List<Roles> roles;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return this.roles;
     }
 
     @Override
