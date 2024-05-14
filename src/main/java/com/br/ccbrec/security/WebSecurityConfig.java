@@ -1,8 +1,8 @@
 package com.br.ccbrec.security;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +18,12 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(
                         (requests) -> {
+                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec").hasAnyAuthority("ROLE_ADMIN", "ROLE_READER");
+
+                            // Strict Admin actions
+                            requests.requestMatchers(HttpMethod.POST, "/web/ccbrec/addNewCount").hasAuthority("ROLE_ADMIN");
+                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec/removeCount").hasAuthority("ROLE_ADMIN");
+
                             requests.anyRequest().authenticated();
                         }
                 )

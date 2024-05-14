@@ -6,14 +6,14 @@ function selectBoxOnChanges(){
 
 function toggleAddCountButton(){
     var form = document.getElementById("add-count-form");
-    form.style.display = form.style.display == "none" ? "" : "none";
+    form.style.display = form.style.display === "none" ? "" : "none";
 }
 
 function editCount(){
     var tableRow;
 
     // Here we see a POG made for the case of user clicks on svg instead of button el
-    if (event.srcElement.tagName == 'svg'){
+    if (event.srcElement.tagName === 'svg'){
         tableRow = event.srcElement.parentElement.parentElement.parentElement;
     }
     else{

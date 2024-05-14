@@ -3,6 +3,7 @@ package com.br.ccbrec.dto;
 import com.br.ccbrec.entities.RecitativosCount;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.SplitedDate;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,16 +12,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecitativosCountDTO {
+    @NotBlank
     private String date;
 
+    @NotNull
+    @PositiveOrZero
     private int girls;
 
+    @NotNull
+    @PositiveOrZero
     private int boys;
 
+    @NotNull
+    @PositiveOrZero
     private int youngGirls;
 
+    @NotNull
+    @PositiveOrZero
     private int youngBoys;
 
+    @NotNull
+    @PositiveOrZero
     private int individuals;
 
     public static RecitativosCountDTO fromDTO(RecitativosCount count) {
