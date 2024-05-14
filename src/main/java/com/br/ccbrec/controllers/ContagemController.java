@@ -2,13 +2,17 @@ package com.br.ccbrec.controllers;
 
 import com.br.ccbrec.dto.RecitativosCountDTO;
 import com.br.ccbrec.entities.RecitativosCount;
+import com.br.ccbrec.enums.RoleName;
+import com.br.ccbrec.services.AuthService;
 import com.br.ccbrec.services.RecitativosCountService;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.SplitedDate;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,19 +23,31 @@ public class ContagemController {
     @Autowired
     private RecitativosCountService service;
 
+    @Autowired
+    private AuthService authService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model, @RequestParam String year, @RequestParam String month) {
         List<RecitativosCountDTO> dtos = service.getCountsByDate(month, year);
+        RoleName mostPrivilege = this.authService.getMostPrivileges(SecurityContextHolder.getContext());
 
+        model.addAttribute("isFormVisible", "none");
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("counts", dtos);
-        model.addAttribute("formDTO", new RecitativosCountDTO());
+        model.addAttribute("recitativosCountDTO", new RecitativosCountDTO());
+        model.addAttribute("mostPrivilege", mostPrivilege.toString());
+
         return "index";
     }
 
     @PostMapping("/addNewCount")
-    public String addNewCount(@ModelAttribute RecitativosCountDTO formDTO) {
+    public String addNewCount(@Valid RecitativosCountDTO formDTO, BindingResult bindingResult, Model model) {
         try {
+            if (bindingResult.hasErrors()){
+                model.addAttribute("isFormVisible", "default");
+                return "index";
+            }
+
             RecitativosCount entityCount = this.service.addNewCount(formDTO);
             return String.format("redirect:/web/ccbrec?year=%s&month=%s", entityCount.getYear(), entityCount.getMonth());
         } catch (Exception exception) {
