@@ -1,4 +1,4 @@
-<head>
+<head xmlns:style="http://www.w3.org/1999/xhtml">
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="https://congregacaocristanobrasil.org.br/assets/images/logo-ccb-light.png" type="image/png">
     <title>Contagem Recitativos</title>
@@ -10,6 +10,13 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <script th:src="@{/js/functions.js}"></script>
+
+    <style>
+        .nav-item:hover{
+            background-color: cornsilk;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: lightsteelblue">
@@ -20,11 +27,11 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item active">
-                <a class="nav-link" href="#">Contagem</span></a>
+                <a class="nav-link" href="/">Contagem</span></a>
             </li>
 
             <li class="nav-item active">
-                <a class="nav-link" href="#">Reunião de Auxiliares</a>
+                <a class="nav-link" href="/web/meetings">Reunião de Auxiliares</a>
             </li>
         </ul>
     </div>

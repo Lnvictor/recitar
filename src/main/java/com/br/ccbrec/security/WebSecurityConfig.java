@@ -20,12 +20,25 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         (requests) -> {
-                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec").hasAnyAuthority("ROLE_ADMIN", "ROLE_READER");
+                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec")
+                                    .hasAnyAuthority("ROLE_ADMIN", "ROLE_AUXILIAR","ROLE_READER");
 
                             // Strict Admin actions
-                            requests.requestMatchers(HttpMethod.POST, "/web/ccbrec/addNewCount").hasAuthority("ROLE_ADMIN");
-                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec/removeCount").hasAuthority("ROLE_ADMIN");
+                            requests.requestMatchers(HttpMethod.POST, "/web/ccbrec/addNewCount")
+                                    .hasAnyAuthority("ROLE_ADMIN");
+                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec/removeCount").
+                                    hasAnyAuthority("ROLE_ADMIN");
 
+                            // Strict Admin and Auxiliares actions
+
+                            requests.requestMatchers(HttpMethod.GET,"/web/meetings/**")
+                                            .hasAnyAuthority("ROLE_ADMIN", "ROLE_AUXILIAR");
+
+                            requests.requestMatchers(HttpMethod.POST,"/web/meetings/**")
+                                    .hasAnyAuthority("ROLE_ADMIN");
+
+                            requests.requestMatchers(HttpMethod.GET, "/web/meetings/addMeeting")
+                                            .hasAnyAuthority("ROLE_ADMIN");
                             requests.anyRequest().authenticated();
                         }
                 )

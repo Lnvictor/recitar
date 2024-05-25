@@ -37,7 +37,7 @@ public class ContagemController {
         model.addAttribute("recitativosCountDTO", new RecitativosCountDTO());
         model.addAttribute("mostPrivilege", mostPrivilege.toString());
 
-        return "index";
+        return "ccbrec/index";
     }
 
     @PostMapping("/addNewCount")
@@ -45,11 +45,12 @@ public class ContagemController {
         try {
             if (bindingResult.hasErrors()){
                 model.addAttribute("isFormVisible", "default");
-                return "index";
+                return "ccbrec/index";
             }
 
             RecitativosCount entityCount = this.service.addNewCount(formDTO);
-            return String.format("redirect:/web/ccbrec?year=%s&month=%s", entityCount.getYear(), entityCount.getMonth());
+            return String.format("redirect:/web/ccbrec?year=%s&month=%s", entityCount.getYouthCult().getYear(),
+                    entityCount.getYouthCult().getMonth());
         } catch (Exception exception) {
             return "error";
         }

@@ -1,11 +1,11 @@
-# ccb-recitativos
+# Sistema Recitar
 
 ### Objetivo
-Sistema implementado para o controle das contagens de recitativos das reuniões de jovens e menores da comum congregação
+Sistema implementado para o gerenciamento dos recitativos das reuniões de jovens e menores da comum congregação
 do Jardim Santa Mônica - Campinas-SP
 
-Com o sistema, o usuário será capaz de cadastrar novas contagens, 
-bem como editar e deletar contagens passadas.
+Com o sistema, o usuário será capaz de gerenciar as contagens de recitativos e armazenar as informações importantes 
+discutidas nas reuniões de auxliares
 
 Voce pode acessar pelo seguinte link: [https://ccb-recitativos.onrender.com/login](https://ccb-recitativos.onrender.com/login)
 
@@ -17,17 +17,18 @@ Voce pode acessar pelo seguinte link: [https://ccb-recitativos.onrender.com/logi
 
 ### Prévia
 
+### Controle dos recitativos
+
 ![img_1.png](img_1.png)
+
+### Controle das reuniões de auxiliares
+
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
 
 ### O que falta ser implementado
 
-- Acesso por roles (Leitura, escrita, admin, etc...)
 - Registrar quem atendeu o culto
 - Tela de perfil
 - Implementar validação para add contagens somente aos domingos(visto que as reuniões ocorrem neste dia)
-- Registrar reuniões de auxiliares (PARTES DE PALAVRA)
-- Implementar CI/CD
-
-### Bugs conhecidos
-
-- [#3 - Edit não funciona](https://github.com/Lnvictor/ccb-recitativos/issues/3)
+- Auxiliares poderem registrar as partes de palavra dos proximos domingos

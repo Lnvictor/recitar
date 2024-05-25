@@ -4,6 +4,11 @@ function selectBoxOnChanges(){
     window.location = `/web/ccbrec?year=${year}&month=${month}`;
 }
 
+function selectBoxOnChangesMeetings(){
+    var year = document.getElementById('inputGroupDateAno').value;
+    window.location = `/web/meetings?year=${year}`;
+}
+
 function toggleAddCountButton(){
     var form = document.getElementById("add-count-form");
     form.style.display = form.style.display === "none" ? "" : "none";
@@ -41,4 +46,15 @@ function editCount(){
     document.getElementById("individuals").value = obj.individuals;
 
     document.getElementById("add-count-form").submit();
+}
+
+function newMeetingAddParticipant(){
+    var selectBox = document.getElementById("auxiliaresParticipants");
+    var selectedAuxiliarIndex = selectBox.selectedIndex;
+
+    var textArea = document.getElementById("participants");
+    if (textArea.innerHTML.length > 0){
+        textArea.innerHTML += "\n";
+    }
+    textArea.innerHTML += selectBox[selectedAuxiliarIndex].innerHTML;
 }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: head}"></head>
+
+<body>
+<nav th:replace="~{common :: nav}"></nav>
+<br>
+<div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupDateAno">Ano</label>
+        </div>
+        <!-- todo: mudar esse filtro pra tipo -> "ultimos 4 meses" ou algo do tipo   -->
+        <select class="custom-select" id="inputGroupDateAno">
+            <option disabled selected value> -- selecione um ano -- </option>
+            <option id="year2022" value="2022">2022</option>
+            <option id="year2023" value="2023">2023</option>
+            <option id="year2024" value="2024">2024</option>
+        </select>
+        <button type="button" class="btn btn-outline-primary" id="dateButton" onclick="javascrpt:selectBoxOnChangesMeetings()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </button>
+    </div>
+    <table class="table table-light table-striped table-bordered table-hover table-sm ">
+        <thead class="thead">
+        <tr>
+            <th scope="col">Data</th>
+            <th th:if="${mostPrivilege == 'ROLE_ADMIN' or mostPrivilege == 'ROLE_AUXILIAR'}" scope="col-light">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr class="" th:each="date :${dates}">
+                <td th:text="${date.getDate()}"></td>
+                <td th:if="${mostPrivilege == 'ROLE_ADMIN' or mostPrivilege == 'ROLE_AUXILIAR'}">
+                <!--TODO: MAKE THIS OPEN  A FILLED FORM, BECAUSE USER IS CLICKING IN AN EXISTENT MEETING-->
+                    <a th:href="@{/web/meetings/detail(date=${date.getDate()})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a th:if="${mostPrivilege == 'ROLE_ADMIN'}" class="btn btn-secondary" href="/web/meetings/addMeeting" role="button">Nova Reunião</a>
+</div>
+</body>
+</html>
