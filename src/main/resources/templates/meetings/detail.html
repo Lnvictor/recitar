@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: head}"></head>
+
+<body>
+<nav th:replace="~{common :: nav}"></nav>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header form-header">
+                    <h3>Ata de Reunião</h3>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <div class="form-group">
+                            <label for="meetingDate">Data da Reunião</label>
+                            <input type="date" class="form-control" id="meetingDate" disabled required th:value="${date}">
+                        </div>
+                        <div class="form-group">
+                            <label for="meetingNotes">Notas da Reunião</label>
+                            <textarea th:text="${dto.getNotes()}" disabled class="form-control" id="meetingNotes" rows="5" placeholder="Resumo dos assuntos discutidos" required></textarea>
+                        </div>
+                        <a class="btn btn-secondary" href="/web/meetings" role="button">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: head}"></head>
+
+<body>
+<nav th:replace="~{common :: nav}"></nav>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header form-header">
+                    <h3>Ata de Reunião</h3>
+                </div>
+                <div class="card-body">
+                    <form  th:object="${auxiliaresMeetingDTO}" th:action="@{/web/meetings/addMeeting}", method="post">
+                        <div class="form-group">
+                            <label for="meetingDate">Data da Reunião</label>
+                            <input type="date" class="form-control" id="meetingDate" required th:field="*{date}">
+                        </div>
+                        <div class="form-group">
+                            <p class="p">Adicione os auxiliares que participaram</p>
+                            <div class="input-group mb-3">
+                                <select class="custom-select" id="auxiliaresParticipants">
+                                    <option disabled selected value> -- selecione um auxiliar -- </option>
+                                    <option th:each="aux : ${auxiliares}" th:text="${aux.getUsername()}" th:value="${aux.getUsername()}"></option>
+                                    </select>
+                                    <button class="btn btn-primary" onclick="newMeetingAddParticipant()">add</button>
+                            </div>
+
+
+                            <label for="participants">Participantes</label>
+                            <textarea readonly class="form-control" id="participants" rows="3" placeholder="Nome dos participantes" required></textarea>
+                        </div>
+                        <!-- IT WILL BE HIDDEN UNTIL I DEVELOP RECITATIVOS REGISTRATION BY AUXILIARES PART -->
+                        <div class="form-group" hidden="true">
+                            <label>Próximos Recitativos</label>
+                            <ul>
+                                <li th:each="date: ${nextCults}" th:text="${date.convertIntoBRDateStr()}">
+
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-group">
+                            <label for="meetingNotes">Notas da Reunião</label>
+                            <textarea th:field="*{notes}" class="form-control" id="meetingNotes" rows="5" placeholder="Resumo dos assuntos discutidos" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Salvar Ata</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
