@@ -17,14 +17,9 @@ public class RecitativosCount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "year")
-    private String year;
-
-    @Column(name = "month")
-    private String month;
-
-    @Column(name = "day")
-    private String day;
+    @OneToOne
+    @JoinColumn(name = "cult_id")
+    private YouthCult youthCult;
 
     @Column(name = "girls")
     private int girls;
