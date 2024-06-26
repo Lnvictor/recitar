@@ -74,4 +74,32 @@ public class DateUtils {
     public static String transformSplitedDateIntoStr(String year, String month, String day) {
         return String.format("%s/%s/%s", day, month, year);
     }
+
+    /**
+     *
+     * Method useful to sort a Collection by a increasing order by date
+     *
+     * Due the fact we arte dealing with custom date class (SplitedDate) we should implement our
+     * custom Comparator
+     *
+     * @param date1
+     * @param date2
+     * @return int
+     */
+    public static int compareDate(String date1, String date2) {
+        SplitedDate sp = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date1));
+        SplitedDate sp2 = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date2));
+
+        return DateUtils.compareSplitedDate(sp, sp2);
+    }
+
+    public static int compareSplitedDate(SplitedDate sp, SplitedDate sp2) {
+        Calendar c1 = Calendar.getInstance();
+        c1.set(Integer.parseInt(sp.getYear()), Integer.parseInt(sp.getMonth()), Integer.parseInt(sp.getDay()));
+
+        Calendar c2 = Calendar.getInstance();
+        c2.set(Integer.parseInt(sp2.getYear()), Integer.parseInt(sp2.getMonth()), Integer.parseInt(sp2.getDay()));
+
+        return c1.compareTo(c2);
+    }
 }

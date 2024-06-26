@@ -1,5 +1,6 @@
 package com.br.ccbrec.controllers;
 
+import com.br.ccbrec.util.DateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +15,7 @@ public class IndexController {
     public String index(){
         Calendar now = Calendar.getInstance();
         int year = now.get(Calendar.YEAR);
-        int month = now.get(Calendar.MONTH);
+        String month = DateUtils.normalizeDayOrMonth(String.valueOf(now.get(Calendar.MONTH) + 1));
 
         return String.format("redirect:/web/ccbrec?year=%s&month=%s", year, month);
     }
