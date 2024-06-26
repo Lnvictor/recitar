@@ -7,18 +7,18 @@
 <nav th:replace="~{common :: nav}"></nav>
 <br>
 <div class="container">
-    <div class="input-group mb-3">
+    <div class="input-group mb-3 w-25">
         <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupDateAno">Ano</label>
         </div>
         <!-- todo: mudar esse filtro pra tipo -> "ultimos 4 meses" ou algo do tipo   -->
         <select class="custom-select" id="inputGroupDateAno">
             <option disabled selected value> -- selecione um ano -- </option>
-            <option id="year2022" value="2022">2022</option>
-            <option id="year2023" value="2023">2023</option>
-            <option id="year2024" value="2024">2024</option>
+            <option th:selected="${year.equals('2022')}" id="year2022" value="2022">2022</option>
+            <option th:selected="${year.equals('2023')}" id="year2023" value="2023">2023</option>
+            <option th:selected="${year.equals('2024')}" id="year2024" value="2024">2024</option>
         </select>
-        <button type="button" class="btn btn-outline-primary" id="dateButton" onclick="javascrpt:selectBoxOnChangesMeetings()">
+        <button type="button" class="btn btn-outline-primary ml-3" id="dateButton" onclick="javascrpt:selectBoxOnChangesMeetings()">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
             </svg>
@@ -47,7 +47,7 @@
         </tbody>
     </table>
     <br>
-    <a th:if="${mostPrivilege == 'ROLE_ADMIN'}" class="btn btn-secondary" href="/web/meetings/addMeeting" role="button">Nova Reunião</a>
+    <a th:if="${mostPrivilege == 'ROLE_ADMIN'}" class="btn btn-secondary" href="/web/meetings/add" role="button">Nova Reunião</a>
 </div>
 </body>
 </html>
