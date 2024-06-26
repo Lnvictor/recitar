@@ -1,6 +1,8 @@
 package com.br.ccbrec.services;
 
 import com.br.ccbrec.dto.AuxiliaresMeetingDTO;
+import com.br.ccbrec.dto.DTO;
+import com.br.ccbrec.dto.RecitativosDTO;
 import com.br.ccbrec.entities.AuxiliaresMeeting;
 import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.repositories.AuxiliaresMeetingRepository;
@@ -10,48 +12,35 @@ import com.br.ccbrec.util.SplitedDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class MeetingsService {
+public class MeetingsService implements IService {
     @Autowired
     private AuxiliaresMeetingRepository repository;
 
     @Autowired
     private YouthCultRepository cultRepository;
 
-    public List<SplitedDate> getCultsForNextMeeting() {
-        List<YouthCult> latestCult = cultRepository.findTop1ByOrderByCultIdDesc();
-        List<SplitedDate> nextCultDates = new ArrayList<>();
-
-        // calculating dates for next two months TODO: DEFINE HOW MANY WEEKS UPCOMING CALCULATE
-        for (int i = 1; i <= 8; i++) {
-            int weekDaysToAdd = i * 7;
-
-            nextCultDates.add(DateUtils.addDays(latestCult.getFirst().getYear(), latestCult.getFirst().getMonth(),
-                    latestCult.getFirst().getDay(), weekDaysToAdd));
-        }
-
-        return nextCultDates;
-    }
-
     public List<AuxiliaresMeetingDTO> getRealizedMeetings(String year) {
-        List<AuxiliaresMeeting> entitites = this.repository.findByYear(year,10);
+        List<AuxiliaresMeeting> entitites = this.repository.findByYear(year, 10);
 
         List<AuxiliaresMeetingDTO> dtos = entitites.stream().map(
                 (entity) -> {
                     return AuxiliaresMeetingDTO.fromEntity(entity);
                 }
-        ).collect(Collectors.toUnmodifiableList());
+        ).collect(Collectors.toList());
+
+        Collections.sort(dtos, (o1, o2) -> DateUtils.compareDate(o1.getDate(), o2.getDate()));
 
         return dtos;
     }
 
-    public AuxiliaresMeetingDTO addMeeting(AuxiliaresMeetingDTO auxiliaresMeetingDTO) {
+    public DTO add(DTO dto) {
+        AuxiliaresMeetingDTO auxiliaresMeetingDTO = (AuxiliaresMeetingDTO) dto;
         SplitedDate spDate = DateUtils.splitRecitativosDate(auxiliaresMeetingDTO.getDate());
-        YouthCult cult = this.cultRepository.findByYearAndMonthAndDay(spDate.getYear(), spDate.getMonth(),spDate.getDay());
+        YouthCult cult = this.cultRepository.findByYearAndMonthAndDay(spDate.getYear(), spDate.getMonth(), spDate.getDay());
 
         if (cult == null) {
             cult = new YouthCult();
@@ -73,17 +62,31 @@ public class MeetingsService {
         SplitedDate sp = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date));
         YouthCult cult = this.cultRepository.findByYearAndMonthAndDay(sp.getYear(), sp.getMonth(), sp.getDay());
 
-        if (cult == null){
+        if (cult == null) {
             throw new RuntimeException("Youth cult is not registered in database");
         }
 
         AuxiliaresMeeting meeting = this.repository.findByYouthCult(cult);
 
-        if (meeting == null){
+        if (meeting == null) {
             throw new RuntimeException("Meeting does not exists, how can I get detail of a thing who doesnt exists???????");
         }
 
         return AuxiliaresMeetingDTO.fromEntity(meeting);
 
+    }
+
+    /*
+     * Not Implemented YEAT
+     * */
+
+    @Override
+    public void delete(SplitedDate dto) {
+        return;
+    }
+
+    @Override
+    public void update(DTO dto) {
+        return;
     }
 }
