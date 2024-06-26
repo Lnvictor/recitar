@@ -24,20 +24,19 @@ public class WebSecurityConfig {
                                     .hasAnyAuthority("ROLE_ADMIN", "ROLE_AUXILIAR","ROLE_READER");
 
                             // Strict Admin actions
-                            requests.requestMatchers(HttpMethod.POST, "/web/ccbrec/addNewCount")
+                            requests.requestMatchers(HttpMethod.POST, "/web/ccbrec/add")
                                     .hasAnyAuthority("ROLE_ADMIN");
-                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec/removeCount").
+                            requests.requestMatchers(HttpMethod.GET, "/web/ccbrec/delete").
                                     hasAnyAuthority("ROLE_ADMIN");
 
                             // Strict Admin and Auxiliares actions
-
                             requests.requestMatchers(HttpMethod.GET,"/web/meetings/**")
                                             .hasAnyAuthority("ROLE_ADMIN", "ROLE_AUXILIAR");
 
                             requests.requestMatchers(HttpMethod.POST,"/web/meetings/**")
                                     .hasAnyAuthority("ROLE_ADMIN");
 
-                            requests.requestMatchers(HttpMethod.GET, "/web/meetings/addMeeting")
+                            requests.requestMatchers(HttpMethod.GET, "/web/meetings/add")
                                             .hasAnyAuthority("ROLE_ADMIN");
                             requests.anyRequest().authenticated();
                         }

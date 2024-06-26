@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: head}"></head>
+
+<body>
+<nav th:replace="~{common :: nav}"></nav>
+<br>
+<div class="container">
+    <div class="input-group mb-4">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupDateAno">Ano</label>
+        </div>
+        <select class="custom-select" id="inputGroupDateAno">
+            <option disabled selected value> -- selecione um ano -- </option>
+            <option th:selected="${year.equals('2022')}" id="year2022" value="2022">2022</option>
+            <option th:selected="${year.equals('2023')}" id="year2023" value="2023">2023</option>
+            <option th:selected="${year.equals('2024')}" id="year2024" value="2024">2024</option>
+        </select>
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupDateMes">Mes</label>
+        </div>
+        <select class="custom-select" id="inputGroupDateMes">
+            <option disabled selected value> -- selecione um mês -- </option>
+            <option th:selected="${month.equals('01')}" id="month01" value="01">01</option>
+            <option th:selected="${month.equals('02')}"  id="month02" value="02">02</option>
+            <option th:selected="${month.equals('03')}" id="month03" value="03">03</option>
+            <option th:selected="${month.equals('04')}" id="month04" value="04">04</option>
+            <option th:selected="${month.equals('05')}" id="month05" value="05">05</option>
+            <option th:selected="${month.equals('06')}" id="month06" value="06">06</option>
+            <option th:selected="${month.equals('07')}" id="month07" value="07">07</option>
+            <option th:selected="${month.equals('08')}" id="month08" value="08">08</option>
+            <option th:selected="${month.equals('09')}" id="month09" value="09">09</option>
+            <option th:selected="${month.equals('10')}" id="month10" value="10">10</option>
+            <option th:selected="${month.equals('11')}" id="month11" value="11">11</option>
+            <option th:selected="${month.equals('12')}" id="month12" value="12">12</option>
+        </select>
+
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSet">Conjunto</label>
+        </div>
+        <select class="custom-select" id="inputGroupSet">
+            <option disabled selected value> -- selecione um conjunto -- </option>
+            <option th:selected="${order.equals(1)}" id="set01" value="01">01</option>
+            <option th:selected="${order.equals(2)}" id="set02" value="02">02</option>
+            <option th:selected="${order.equals(3)}" id="set03" value="03">03</option>
+        </select>
+
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupLado">Lado</label>
+        </div>
+        <select class="custom-select" id="inputGroupLado">
+            <option disabled selected value> -- selecione um lado -- </option>
+            <option th:selected="${side.equals('WOMAN')}" id="irmas" value="irmas">Irmãs</option>
+            <option th:selected="${side.equals('MAN')}" id="irmaos" value="irmaos">Irmãos</option>
+        </select>
+
+        <button type="button" class="btn btn-outline-primary" id="dateButton" onclick="javascrpt:selectBoxOnChangesRecitativos()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </button>
+    </div>
+    <table class="table light table-striped table-bordered table-hover table-sm ">
+        <thead class="thead">
+        <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Livro</th>
+            <th scope="col">Capítulo</th>
+            <th scope="col">Primeiro Verso</th>
+            <th scope="col">Lado</th>
+            <th scope="col">Conjunto</th>
+            <th th:if="${mostPrivilege == 'ROLE_ADMIN'}" scope="col-light">Ações</th>
+        </tr>
+        </thead>
+            <tr th:each="rec: ${dtos}">
+                <td contenteditable="false" th:text="${rec.getDate()}"></td>
+                <td contenteditable="true" th:text="${rec.getBook()}"></td>
+                <td contenteditable="true" th:text="${rec.getChapter()}"></td>
+                <td  contenteditable="true" th:text="${rec.getFirstVerse()}"></td>
+                <td  contenteditable="true" th:text="${rec.getPtBrSide()}"></td>
+                <td  contenteditable="true" th:text="${rec.getOrder()}"></td>
+                <td th:if="${mostPrivilege == 'ROLE_ADMIN' or mostPrivilege == 'ROLE_AUXILIAR'}">
+                    <a th:href="@{/web/recitativos/delete(date=${rec.getDate()})}" >
+                        <button class="btn btn-danger">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            </svg>
+                        </button>
+                    </a>
+                    <button class="btn btn-success" th:onclick="editRec()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1z"/>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br>
+    <button th:if="${mostPrivilege == 'ROLE_ADMIN'}" class="btn btn-secondary" onclick="toggleAddRecitativoButton()">Adicionar Recitativo</button>
+</div>
+<div class="container">
+    <br>
+    <form th:style="|display: ${isFormVisible}|" id="add-rec-form" action="#" th:action="@{/web/recitativos/add}"
+           method="POST" th:object="${recitativosDTO}">
+        <div class="row">
+            <div class="col">
+                <label for="date">Dia da reunião</label>
+                <input type="date" id="date" name="date" class="form-control" placeholder="Data"
+                       th:errorclass="is-invalid" th:field="*{date}">
+                <div class="invalid-feedback" th:errors="*{date}"></div>
+                <br>
+                <label for="order">Ordem</label>
+                <input type="number" id="order" name="order" class="form-control"
+                       th:errorclass="is-invalid" placeholder="Ordem" th:field="*{order}">
+                <div class="invalid-feedback" th:errors="*{order}"></div>
+                <br>
+                <label for="side">Lado</label>
+<!--                <input type="Text" id="side" name="side" class="form-control" placeholder="Lado" th:field="*{side}">-->
+
+                <select name="side" id="side" class="custom-select" th:errorclass="is-invalid">
+                    <option th:each="sideOpt : ${T(com.br.ccbrec.enums.RecitativosSide).values()}"
+                            th:value="${sideOpt}" th:text="${sideOpt}"></option>
+                </select>
+                <div class="invalid-feedback" th:errors="*{side}"></div>
+            </div>
+
+            <div class="col">
+                <label for="book">Livro</label>
+                <input type="Text" id="book" name="book" class="form-control" placeholder="Livro" value="" th:field="*{book}"
+                    th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{book}"></div>
+                <br>
+                <label for="chapter">Capítulo</label>
+                <input type="number" id="chapter" name="chapter" class="form-control" placeholder="Capítulo" value="" th:field="*{chapter}" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{chapter}"></div>
+                <br>
+                <label for="first-verse">Primeiro Verso</label>
+                <input type="number" id="first-verse" name="first-verse" class="form-control" placeholder="Primeiro Verso" th:field="*{firstVerse}" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{firstVerse}"></div>
+            </div>
+        </div>
+        <br>
+        <button id="upsert-submit" class="btn btn-primary" type="submit">Salvar</button>
+    </form>
+</div>
+</body>
+</html>

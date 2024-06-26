@@ -4,16 +4,18 @@ package com.br.ccbrec.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.lang.annotation.Annotation;
+
 @Data
 @Entity
 @Table(name = "recitativos")
-public class Recitativos {
+public class Recitativos implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recitativos_id")
     private Long recitativos_id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cult_id")
     private YouthCult youthCult;
 
@@ -41,4 +43,14 @@ public class Recitativos {
 
     @ManyToOne
     private Roles readerRole;
+
+    @Override
+    public String name() {
+        return "Recitativos";
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return null;
+    }
 }

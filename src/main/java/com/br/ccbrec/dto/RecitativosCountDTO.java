@@ -1,6 +1,5 @@
 package com.br.ccbrec.dto;
 
-import com.br.ccbrec.entities.Recitativos;
 import com.br.ccbrec.entities.RecitativosCount;
 import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.util.DateUtils;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecitativosCountDTO {
+public class RecitativosCountDTO extends DTO{
     @NotBlank
     private String date;
 
@@ -37,7 +36,7 @@ public class RecitativosCountDTO {
     @PositiveOrZero
     private int individuals;
 
-    public static RecitativosCountDTO fromDTO(RecitativosCount count) {
+    public static RecitativosCountDTO fromEntity(RecitativosCount count) {
         return new RecitativosCountDTO(RecitativosCountDTO.getFormattedDate(count.getYouthCult().getDay(),
                 count.getYouthCult().getMonth(), count.getYouthCult().getYear()), count.getGirls(), count.getBoys(),
                 count.getYoungGirls(), count.getYoungBoys(), count.getIndividuals());

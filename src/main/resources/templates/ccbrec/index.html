@@ -7,35 +7,35 @@
 <nav th:replace="~{common :: nav}"></nav>
 <br>
 <div class="container">
-    <div class="input-group mb-3">
+    <div class="input-group mb-3 w-50">
         <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupDateAno">Ano</label>
         </div>
         <select class="custom-select" id="inputGroupDateAno">
             <option disabled selected value> -- selecione um ano -- </option>
-            <option id="year2022" value="2022">2022</option>
-            <option id="year2023" value="2023">2023</option>
-            <option id="year2024" value="2024">2024</option>
+            <option th:selected="${year.equals('2022')}" id="year2022" value="2022">2022</option>
+            <option th:selected="${year.equals('2023')}" id="year2023" value="2023">2023</option>
+            <option th:selected="${year.equals('2024')}" id="year2024" value="2024">2024</option>
         </select>
-        <div class="input-group-prepend">
+        <div class="input-group-prepend ml-3">
             <label class="input-group-text" for="inputGroupDateMes">Mes</label>
         </div>
         <select class="custom-select" id="inputGroupDateMes">
             <option disabled selected value> -- selecione um mês -- </option>
-            <option id="month01" value="01">01</option>
-            <option id="month02" value="02">02</option>
-            <option id="month03" value="03">03</option>
-            <option id="month04" value="04">04</option>
-            <option id="month05" value="05">05</option>
-            <option id="month06" value="06">06</option>
-            <option id="month07" value="07">07</option>
-            <option id="month08" value="08">08</option>
-            <option id="month09" value="09">09</option>
-            <option id="month10" value="10">10</option>
-            <option id="month11" value="11">11</option>
-            <option id="month12" value="12">12</option>
+            <option th:selected="${month.equals('01')}" id="month01" value="01">01</option>
+            <option th:selected="${month.equals('02')}" id="month02" value="02">02</option>
+            <option th:selected="${month.equals('03')}" id="month03" value="03">03</option>
+            <option th:selected="${month.equals('04')}" id="month04" value="04">04</option>
+            <option th:selected="${month.equals('05')}" id="month05" value="05">05</option>
+            <option th:selected="${month.equals('06')}" id="month06" value="06">06</option>
+            <option th:selected="${month.equals('07')}" id="month07" value="07">07</option>
+            <option th:selected="${month.equals('08')}" id="month08" value="08">08</option>
+            <option th:selected="${month.equals('09')}" id="month09" value="09">09</option>
+            <option th:selected="${month.equals('10')}" id="month10" value="10">10</option>
+            <option th:selected="${month.equals('11')}" id="month11" value="11">11</option>
+            <option th:selected="${month.equals('12')}" id="month12" value="12">12</option>
         </select>
-        <button type="button" class="btn btn-outline-primary" id="dateButton" onclick="javascrpt:selectBoxOnChanges()">
+        <button type="button" class="btn btn-outline-primary ml-3" id="dateButton" onclick="javascrpt:selectBoxOnChanges()">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
             </svg>
@@ -64,7 +64,7 @@
             <td contenteditable="true" th:text="${dto.getIndividuals()}"></td>
             <td contenteditable="true" th:text="${dto.getTotal()}"></td>
             <td th:if="${mostPrivilege == 'ROLE_ADMIN'}">
-                <a th:href="@{/web/ccbrec/removeCount(date=${dto.date})}">
+                <a th:href="@{/web/ccbrec/delete(date=${dto.date})}">
                     <button class="btn btn-danger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -87,7 +87,7 @@
 </div>
 <div class="container">
     <br>
-    <form th:style="|display: ${isFormVisible}|" id="add-count-form" action="#" th:action="@{/web/ccbrec/addNewCount}"
+    <form th:style="|display: ${isFormVisible}|" id="add-count-form" action="#" th:action="@{/web/ccbrec/add}"
           th:object="${recitativosCountDTO}" method="POST">
         <div class="row">
             <div class="col">

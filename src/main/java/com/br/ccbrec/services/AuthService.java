@@ -1,11 +1,13 @@
 package com.br.ccbrec.services;
 
+import com.br.ccbrec.dto.DTO;
 import com.br.ccbrec.dto.UserDTO;
 import com.br.ccbrec.entities.Roles;
 import com.br.ccbrec.entities.User;
 import com.br.ccbrec.enums.RoleName;
 import com.br.ccbrec.repositories.RolesRepository;
 import com.br.ccbrec.repositories.UsersRepository;
+import com.br.ccbrec.util.SplitedDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AuthService {
+public class AuthService implements IService{
 
     @Autowired
     private UsersRepository usersRepository;
@@ -52,5 +54,21 @@ public class AuthService {
         }
 
         return dtos;
+    }
+
+
+    @Override
+    public DTO add(DTO dto) {
+        return null;
+    }
+
+    @Override
+    public void delete(SplitedDate dto) {
+
+    }
+
+    @Override
+    public void update(DTO dto) {
+
     }
 }

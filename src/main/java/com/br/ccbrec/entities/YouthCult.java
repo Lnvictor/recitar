@@ -3,11 +3,15 @@ package com.br.ccbrec.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.lang.annotation.Annotation;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "youth_cult")
-public class YouthCult {
+public class YouthCult implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cultId;
@@ -20,4 +24,20 @@ public class YouthCult {
 
     @Column(name = "year", nullable = false)
     private String year;
+
+    public YouthCult(String year, String month, String day) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    @Override
+    public String name() {
+        return "";
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return null;
+    }
 }

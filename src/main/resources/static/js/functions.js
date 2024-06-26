@@ -9,10 +9,27 @@ function selectBoxOnChangesMeetings(){
     window.location = `/web/meetings?year=${year}`;
 }
 
+function selectBoxOnChangesRecitativos(){
+    var year = document.getElementById('inputGroupDateAno').value;
+    var month = document.getElementById('inputGroupDateMes').value;
+    var set = document.getElementById('inputGroupSet').value;
+    var side = document.getElementById('inputGroupLado').value;
+
+    side = side === "irmaos" ? "MAN" : "WOMAN";
+
+    window.location = `/web/recitativos?year=${year}&month=${month}&order=${set}&side=${side}`
+}
+
 function toggleAddCountButton(){
     var form = document.getElementById("add-count-form");
     form.style.display = form.style.display === "none" ? "" : "none";
 }
+
+function toggleAddRecitativoButton(){
+    var form = document.getElementById("add-rec-form");
+    form.style.display = form.style.display === "none" ? "" : "none";
+}
+
 
 function editCount(){
     var tableRow;
@@ -46,6 +63,44 @@ function editCount(){
     document.getElementById("individuals").value = obj.individuals;
 
     document.getElementById("add-count-form").submit();
+}
+
+
+
+function editRec(){
+    var tableRow;
+
+    // Here we see a POG made for the case of user clicks on svg instead of button el
+    if (event.srcElement.tagName === 'svg'){
+        tableRow = event.srcElement.parentElement.parentElement.parentElement;
+    }
+    else{
+        tableRow = event.srcElement.parentElement.parentElement;
+    }
+
+    var elements = tableRow.getElementsByTagName("td");
+    var s = elements[0].textContent.split("/");
+    var newDate = `${s[2]}-${s[1]}-${s[0]}`
+
+    var obj = {
+        date: newDate,
+        book: elements[1].textContent,
+        chapter: elements[2].textContent,
+        firstVerse: elements[3].textContent,
+        side: elements[4].textContent,
+        order: elements[5].textContent,
+    }
+
+    var side = obj.side === "Meninos" ? "MAN" : "WOMEN";
+
+    document.getElementById("date").value = obj.date;
+    document.getElementById("order").value = obj.order;
+    document.getElementById("side").value = side;
+    document.getElementById("book").value = obj.book;
+    document.getElementById("chapter").value = obj.chapter;
+    document.getElementById("first-verse").value = obj.firstVerse;
+
+    document.getElementById("add-rec-form").submit();
 }
 
 function newMeetingAddParticipant(){

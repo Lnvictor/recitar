@@ -36,11 +36,13 @@ public class ContagemController {
         model.addAttribute("counts", dtos);
         model.addAttribute("recitativosCountDTO", new RecitativosCountDTO());
         model.addAttribute("mostPrivilege", mostPrivilege.toString());
+        model.addAttribute("month", month);
+        model.addAttribute("year", year);
 
         return "ccbrec/index";
     }
 
-    @PostMapping("/addNewCount")
+    @PostMapping("/add")
     public String addNewCount(@Valid RecitativosCountDTO formDTO, BindingResult bindingResult, Model model) {
         try {
             if (bindingResult.hasErrors()){
@@ -48,18 +50,18 @@ public class ContagemController {
                 return "ccbrec/index";
             }
 
-            RecitativosCount entityCount = this.service.addNewCount(formDTO);
-            return String.format("redirect:/web/ccbrec?year=%s&month=%s", entityCount.getYouthCult().getYear(),
-                    entityCount.getYouthCult().getMonth());
+            RecitativosCountDTO entityCount = (RecitativosCountDTO) this.service.add(formDTO);
+            SplitedDate sp = DateUtils.splitRecitativosDate(formDTO.getDate());
+            return String.format("redirect:/web/ccbrec?year=%s&month=%s", sp.getYear(), sp.getMonth());
         } catch (Exception exception) {
             return "error";
         }
     }
 
-    @GetMapping("/removeCount")
+    @GetMapping("/delete")
     public String removeCount(@RequestParam String date) {
         SplitedDate splitedDate = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date));
-        this.service.deleteCount(splitedDate);
+        this.service.delete(splitedDate);
         return String.format("redirect:/web/ccbrec?year=%s&month=%s", splitedDate.getYear(), splitedDate.getMonth());
     }
 }

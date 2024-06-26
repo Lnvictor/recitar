@@ -1,10 +1,10 @@
 package com.br.ccbrec.services;
 
+import com.br.ccbrec.dto.DTO;
 import com.br.ccbrec.dto.RecitativosCountDTO;
 import com.br.ccbrec.entities.RecitativosCount;
 import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.repositories.RecitativosCountRepository;
-import com.br.ccbrec.repositories.RecitativosRepository;
 import com.br.ccbrec.repositories.YouthCultRepository;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.SplitedDate;
@@ -19,15 +19,16 @@ import java.util.*;
  */
 @Transactional
 @Service
-public class RecitativosCountService {
+public class RecitativosCountService implements IService {
+
     @Autowired
     private RecitativosCountRepository repository;
 
     @Autowired
-    private RecitativosRepository recitativosRepository;
+    private YouthCultRepository cultRepository;
 
     @Autowired
-    private YouthCultRepository cultRepository;
+    private YouthCultService cultService;
 
     public List<RecitativosCountDTO> getCountsByDate(String month, String year) {
         month = DateUtils.normalizeDayOrMonth(month);
@@ -37,47 +38,40 @@ public class RecitativosCountService {
 
         countList.forEach(
                 (count) -> {
-                    output.add(RecitativosCountDTO.fromDTO(count));
+                    output.add(RecitativosCountDTO.fromEntity(count));
                 }
         );
 
-        Collections.sort(output, new Comparator<RecitativosCountDTO>() {
-            @Override
-            public int compare(RecitativosCountDTO dto1, RecitativosCountDTO dto2) {
-                return dto1.getDate().compareTo(dto2.getDate());
-            }
-        });
+        Collections.sort(output, (dto1, dto2) -> DateUtils.compareDate(dto1.getDate(), dto2.getDate()));
 
         return output;
     }
 
-    public RecitativosCount addNewCount(RecitativosCountDTO count) throws Exception {
+    public DTO add(DTO dto) {
+        RecitativosCountDTO count = (RecitativosCountDTO) dto;
         SplitedDate splitedDate = DateUtils.splitRecitativosDate(count.getDate());
         boolean dateExists = this.dateExists(splitedDate.getDay(), splitedDate.getMonth(), splitedDate.getYear());
 
-        // IDK if it is a good pratice, but its working! :)
         if (dateExists) {
-            this.updateCount(count);
-            return count.toEntity();
+            this.update(count);
+            return count;
         }
 
         // checking if day selected is sunday, idk how to do this
         //TODO: See how  to implement weekday validation
 
         RecitativosCount entityCount = count.toEntity();
-        YouthCult cult = this.cultRepository.findByYearAndMonthAndDay(splitedDate.getYear(), splitedDate.getMonth(),
-                splitedDate.getDay());
-        
-        if (cult == null){
+        YouthCult cult = this.cultService.cultExists(splitedDate.getYear(), splitedDate.getMonth(), splitedDate.getDay());
+
+        if (cult == null) {
             this.cultRepository.save(entityCount.getYouthCult());
-        }
-        else{
+        } else {
             entityCount.setYouthCult(cult);
         }
 
         this.repository.save(entityCount);
 
-        return entityCount;
+        return count;
     }
 
     private boolean dateExists(String day, String month, String year) {
@@ -88,26 +82,26 @@ public class RecitativosCountService {
         return count != null;
     }
 
-    public void updateCount(RecitativosCountDTO dto) throws Exception {
-        SplitedDate splitedDate = DateUtils.splitRecitativosDate(dto.getDate());
+    @Override
+    public void update(DTO dto) {
+        RecitativosCountDTO countDto = (RecitativosCountDTO) dto;
+
+        SplitedDate splitedDate = DateUtils.splitRecitativosDate(countDto.getDate());
         RecitativosCount count = this.repository.findByYearAndMonthAndDay(
                 splitedDate.getYear(), splitedDate.getMonth(), splitedDate.getDay());
 
-        if (count == null) {
-            throw new Exception("User does not exists");
-        }
-
-        count.setBoys(dto.getBoys());
-        count.setGirls(dto.getGirls());
-        count.setYoungBoys(dto.getYoungBoys());
-        count.setYoungGirls(dto.getYoungGirls());
-        count.setIndividuals(dto.getIndividuals());
+        count.setBoys(countDto.getBoys());
+        count.setGirls(countDto.getGirls());
+        count.setYoungBoys(countDto.getYoungBoys());
+        count.setYoungGirls(countDto.getYoungGirls());
+        count.setIndividuals(countDto.getIndividuals());
 
         this.repository.save(count);
         this.repository.save(count);
     }
 
-    public void deleteCount(SplitedDate splitedDate) {
+    @Override
+    public void delete(SplitedDate splitedDate) {
         RecitativosCount deletionCandidate = this.repository.findByYearAndMonthAndDay(
                 splitedDate.getYear(), splitedDate.getMonth(), splitedDate.getDay());
 

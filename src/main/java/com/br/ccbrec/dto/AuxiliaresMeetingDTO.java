@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuxiliaresMeetingDTO {
+public class AuxiliaresMeetingDTO extends DTO{
     private String date;
     private String notes;
-
-    //private List<RecitativosDTO> recitativos; //idk how Ill deal with recitativos, ill think about this later
 
     public static AuxiliaresMeetingDTO fromEntity(AuxiliaresMeeting entity) {
         String date = DateUtils.transformSplitedDateIntoStr(entity.getYouthCult().getYear(),
