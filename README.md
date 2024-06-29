@@ -7,7 +7,7 @@ do Jardim Santa Mônica - Campinas-SP
 Com o sistema, o usuário será capaz de gerenciar as contagens de recitativos e armazenar as informações importantes 
 discutidas nas reuniões de auxliares
 
-Voce pode acessar pelo seguinte link: [https://ccb-recitativos.onrender.com/login](https://ccb-recitativos.onrender.com/login)
+Voce pode acessar pelo seguinte link: [http://ec2-44-204-105-109.compute-1.amazonaws.com:8080/](http://ec2-44-204-105-109.compute-1.amazonaws.com:8080/)
 
 ### Tecnologias Utilizadas
 
