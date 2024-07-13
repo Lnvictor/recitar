@@ -1,8 +1,10 @@
 package com.br.ccbrec.controllers;
 
+import com.br.ccbrec.dto.ProfileDTO;
 import com.br.ccbrec.dto.RecitativosDTO;
 import com.br.ccbrec.enums.RecitativosSide;
 import com.br.ccbrec.services.AuthService;
+import com.br.ccbrec.services.ProfileService;
 import com.br.ccbrec.services.RecitativoService;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.SplitedDate;
@@ -29,14 +31,19 @@ public class RecitativosController {
     @Autowired
     private RecitativoService service;
 
+    @Autowired
+    private ProfileService profileService;
+
     @GetMapping
     public String recitativos(Model model, String year, String month, int order, String side) {
+        ProfileDTO profileDTO = profileService.getProfileLogged(SecurityContextHolder.getContext());
         String mostPrivilegedUserRole = this.authService.getMostPrivileges(SecurityContextHolder.getContext()).toString();
         RecitativosSide sideEnum = side.equalsIgnoreCase("MAN") ? RecitativosSide.MAN : RecitativosSide.WOMEN;
         List<RecitativosDTO> dtos = this.service.getRecitativosByDateAndFilters(year, month, order, sideEnum);
 
         model.addAttribute("mostPrivilege", mostPrivilegedUserRole);
-        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("username", profileDTO.getUsername());
+        model.addAttribute("profilePhotoUrl", profileDTO.getImage());
         model.addAttribute("isFormVisible", "none");
         model.addAttribute("dtos", dtos);
         model.addAttribute("recitativosDTO", new RecitativosDTO());
@@ -45,13 +52,12 @@ public class RecitativosController {
         model.addAttribute("order", order);
         model.addAttribute("side", side);
 
-
         return "recitativos/index";
     }
 
     @PostMapping("/add")
-    public String addRecitativos(Model model, @Valid RecitativosDTO dto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public String addRecitativos(Model model, @Valid RecitativosDTO dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "recitativos/index";
         }
 
@@ -63,8 +69,8 @@ public class RecitativosController {
     }
 
     @PutMapping("/update")
-    public String updateRecitativos(Model model, @Valid RecitativosDTO recDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public String updateRecitativos(Model model, @Valid RecitativosDTO recDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "recitativos/index";
         }
 

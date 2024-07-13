@@ -1,15 +1,12 @@
 package com.br.ccbrec.controllers;
 
-import com.br.ccbrec.dto.AuxiliaresMeetingDTO;
-import com.br.ccbrec.dto.DTO;
-import com.br.ccbrec.dto.RecitativosDTO;
-import com.br.ccbrec.dto.UserDTO;
+import com.br.ccbrec.dto.*;
 import com.br.ccbrec.enums.RoleName;
 import com.br.ccbrec.services.AuthService;
 import com.br.ccbrec.services.MeetingsService;
+import com.br.ccbrec.services.ProfileService;
 import com.br.ccbrec.services.RecitativoService;
 import com.br.ccbrec.util.DateUtils;
-import com.br.ccbrec.util.SplitedDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,16 +28,22 @@ public class MeetingsController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private ProfileService profileService;
+
     @GetMapping
     public String meetingsIndex(Model model, String year) {
         if (year == null) {
             year = "2024";
         }
 
+        ProfileDTO profileDTO = profileService.getProfileLogged(SecurityContextHolder.getContext());
         List<AuxiliaresMeetingDTO> dtos = this.meetingsService.getRealizedMeetings(year);
         String mostPrivilegedUserRole = this.authService.getMostPrivileges(SecurityContextHolder.getContext()).toString();
 
-        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("username", profileDTO.getUsername());
+        model.addAttribute("profilePhotoUrl", profileDTO.getImage());
+
         model.addAttribute("dates", dtos);
         model.addAttribute("mostPrivilege", mostPrivilegedUserRole);
         model.addAttribute("year", year);

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: head}"></head>
+
+<body>
+<nav th:replace="~{common :: nav}"></nav>
+<br>
+
+<div class="container">
+
+    <div class="text-center">
+        <img th:src="${image}" height="60%" width="30%" class="img-thumbnail" alt="...">
+        <label for="formFile" class="label-file">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+            </svg>
+        </label>
+        <br><br>
+        <h5 class="h5" th:text="${username}"></h5>
+        <h5 class="h5" th:text="'Cargo: ' +  ${role}"></h5>
+    </div>
+
+    <div class="text-center">
+        <form action="/profile/add" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input class="form-control" hidden="hidden" name="image" type="file" id="formFile">
+            </div>
+
+            <button class="btn btn-primary" type="submit">Salvar</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
