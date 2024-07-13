@@ -12,15 +12,15 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AWSCredentialsConfig {
-    @Value("${aws.acessKey}")
-    private String acessKey;
+    @Value("${aws.accessKey}")
+    private String accessKey;
 
     @Value("${aws.secretKey}")
     private String secretkey;
 
     @Bean
     public AWSCredentials awsCredentials() {
-        return new BasicAWSCredentials(acessKey, secretkey);
+        return new BasicAWSCredentials(accessKey, secretkey);
     }
 
     @Bean
