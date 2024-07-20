@@ -18,7 +18,7 @@ public class AuxiliaresMeetingDTO extends DTO{
     private String notes;
 
     public static AuxiliaresMeetingDTO fromEntity(AuxiliaresMeeting entity) {
-        String date = DateUtils.transformSplitedDateIntoStr(entity.getYouthCult().getYear(),
+        String date = DateUtils.transformWrapperDateIntoStr(entity.getYouthCult().getYear(),
                 entity.getYouthCult().getMonth(),
                 entity.getYouthCult().getDay());
 

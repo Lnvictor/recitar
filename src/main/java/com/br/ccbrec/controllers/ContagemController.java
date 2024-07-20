@@ -7,7 +7,7 @@ import com.br.ccbrec.services.AuthService;
 import com.br.ccbrec.services.ProfileService;
 import com.br.ccbrec.services.RecitativosCountService;
 import com.br.ccbrec.util.DateUtils;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,8 +57,8 @@ public class ContagemController {
             }
 
             RecitativosCountDTO entityCount = (RecitativosCountDTO) this.service.add(formDTO);
-            SplitedDate sp = DateUtils.splitRecitativosDate(formDTO.getDate());
-            return String.format("redirect:/web/ccbrec?year=%s&month=%s", sp.getYear(), sp.getMonth());
+            DataParameterWrapper date = DateUtils.splitRecitativosDate(formDTO.getDate());
+            return String.format("redirect:/web/ccbrec?year=%s&month=%s", date.getYear(), date.getMonth());
         } catch (Exception exception) {
             return "error";
         }
@@ -66,8 +66,8 @@ public class ContagemController {
 
     @GetMapping("/delete")
     public String removeCount(@RequestParam String date) {
-        SplitedDate splitedDate = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date));
-        this.service.delete(splitedDate);
-        return String.format("redirect:/web/ccbrec?year=%s&month=%s", splitedDate.getYear(), splitedDate.getMonth());
+        DataParameterWrapper dataParameterWrapper = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date));
+        this.service.delete(dataParameterWrapper);
+        return String.format("redirect:/web/ccbrec?year=%s&month=%s", dataParameterWrapper.getYear(), dataParameterWrapper.getMonth());
     }
 }

@@ -8,7 +8,7 @@ import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.enums.RecitativosSide;
 import com.br.ccbrec.repositories.RecitativosRepository;
 import com.br.ccbrec.util.DateUtils;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.persistence.Entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +41,11 @@ public class RecitativoService implements IService {
             public int compare(Recitativos o1, Recitativos o2) {
                 YouthCult yc = o1.getYouthCult();
                 YouthCult yc2 = o2.getYouthCult();
-                SplitedDate sp = new SplitedDate(yc.getDay(), yc.getMonth(), yc.getYear());
-                SplitedDate sp2 = new SplitedDate(yc2.getDay(), yc2.getMonth(), yc2.getYear());
+                DataParameterWrapper wrapper = new DataParameterWrapper(yc.getDay(), yc.getMonth(), yc.getYear());
+                DataParameterWrapper wrapper2 = new DataParameterWrapper(yc2.getDay(), yc2.getMonth(), yc2.getYear());
 
-                if (!sp.equals(sp2)) {
-                    return DateUtils.compareSplitedDate(sp, sp2);
+                if (!wrapper.equals(wrapper2)) {
+                    return DateUtils.compareDateWrapper(wrapper, wrapper2);
                 }
 
                 if (o1.getSex() != o2.getSex()) {
@@ -88,7 +88,7 @@ public class RecitativoService implements IService {
     @Override
     public DTO add(DTO dto) {
         RecitativosDTO recDto = (RecitativosDTO) dto;
-        SplitedDate sp = DateUtils.splitRecitativosDate(recDto.getDate());
+        DataParameterWrapper sp = DateUtils.splitRecitativosDate(recDto.getDate());
 
         Recitativos rec = this.repository.findByYearAndMonthAndDayAndOrderAndSex(sp.getYear(), sp.getMonth(), sp.getDay(),
                 recDto.getOrder(), recDto.getSide().getValue());
@@ -98,12 +98,12 @@ public class RecitativoService implements IService {
             return recDto;
         }
 
-        YouthCult cult = this.cultService.cultExists(sp.getYear(), sp.getMonth(), sp.getDay());
+        YouthCult cult = this.cultService.cultExists(sp);
 
         if (cult == null) {
             YouthCultDTO newDTO = new YouthCultDTO(sp.getYear(), sp.getMonth(), sp.getDay());
             this.cultService.add(newDTO);
-            cult = this.cultService.cultExists(sp.getYear(), sp.getMonth(), sp.getDay());
+            cult = this.cultService.cultExists(sp);
         }
 
         rec = new Recitativos();
@@ -119,14 +119,14 @@ public class RecitativoService implements IService {
     }
 
     @Override
-    public void delete(SplitedDate dt) {
+    public void delete(DataParameterWrapper dt) {
         throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public void update(DTO dto) {
         RecitativosDTO recDto = (RecitativosDTO) dto;
-        SplitedDate date = DateUtils.splitRecitativosDate(recDto.getDate());
+        DataParameterWrapper date = DateUtils.splitRecitativosDate(recDto.getDate());
 
         Recitativos rec = this.repository.findByYearAndMonthAndDayAndOrderAndSex(date.getYear(), date.getMonth(),
                 date.getDay(), recDto.getOrder(), recDto.getSide().getValue());

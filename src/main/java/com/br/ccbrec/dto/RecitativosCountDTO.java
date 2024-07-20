@@ -3,11 +3,14 @@ package com.br.ccbrec.dto;
 import com.br.ccbrec.entities.RecitativosCount;
 import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.util.DateUtils;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.text.DateFormat;
+import java.util.Locale;
 
 @Data
 @AllArgsConstructor
@@ -43,6 +46,7 @@ public class RecitativosCountDTO extends DTO{
     }
 
     public static String getFormattedDate(String day, String month, String year) {
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.of("pt", "BR"));
         return String.format("%s/%s/%s", day, month, year);
     }
 
@@ -52,7 +56,7 @@ public class RecitativosCountDTO extends DTO{
 
     public RecitativosCount toEntity() {
         RecitativosCount entity = new RecitativosCount();
-        SplitedDate map = DateUtils.splitRecitativosDate(this.date);
+        DataParameterWrapper map = DateUtils.splitRecitativosDate(this.date);
 
         YouthCult youthCult = new YouthCult();
         youthCult.setYear(map.getYear());

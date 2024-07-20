@@ -5,7 +5,6 @@ import com.br.ccbrec.enums.RecitativosSide;
 import com.br.ccbrec.util.DateUtils;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +33,7 @@ public class RecitativosDTO extends DTO {
     public static Object fromEntity(Entity entity){
         Recitativos recitativos = (Recitativos) entity;
         RecitativosSide side = recitativos.getSex() == 'H' ? RecitativosSide.MAN : RecitativosSide.WOMEN;
-        String date = DateUtils.transformSplitedDateIntoStr(recitativos.getYouthCult().getYear(),
+        String date = DateUtils.transformWrapperDateIntoStr(recitativos.getYouthCult().getYear(),
                 recitativos.getYouthCult().getMonth(), recitativos.getYouthCult().getDay());
 
         return new RecitativosDTO(recitativos.getOrder(), side, date, recitativos.getBook(), recitativos.getChapter(),

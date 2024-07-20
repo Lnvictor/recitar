@@ -2,13 +2,12 @@ package com.br.ccbrec.services;
 
 import com.br.ccbrec.dto.AuxiliaresMeetingDTO;
 import com.br.ccbrec.dto.DTO;
-import com.br.ccbrec.dto.RecitativosDTO;
 import com.br.ccbrec.entities.AuxiliaresMeeting;
 import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.repositories.AuxiliaresMeetingRepository;
 import com.br.ccbrec.repositories.YouthCultRepository;
 import com.br.ccbrec.util.DateUtils;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +31,14 @@ public class MeetingsService implements IService {
                 }
         ).collect(Collectors.toList());
 
-        Collections.sort(dtos, (o1, o2) -> DateUtils.compareDate(o1.getDate(), o2.getDate()));
+            Collections.sort(dtos, (o1, o2) -> DateUtils.compareDate(o1.getDate(), o2.getDate()));
 
         return dtos;
     }
 
     public DTO add(DTO dto) {
         AuxiliaresMeetingDTO auxiliaresMeetingDTO = (AuxiliaresMeetingDTO) dto;
-        SplitedDate spDate = DateUtils.splitRecitativosDate(auxiliaresMeetingDTO.getDate());
+        DataParameterWrapper spDate = DateUtils.splitRecitativosDate(auxiliaresMeetingDTO.getDate());
         YouthCult cult = this.cultRepository.findByYearAndMonthAndDay(spDate.getYear(), spDate.getMonth(), spDate.getDay());
 
         if (cult == null) {
@@ -59,7 +58,7 @@ public class MeetingsService implements IService {
     }
 
     public AuxiliaresMeetingDTO getDetailsFromDate(String date) {
-        SplitedDate sp = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date));
+        DataParameterWrapper sp = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date));
         YouthCult cult = this.cultRepository.findByYearAndMonthAndDay(sp.getYear(), sp.getMonth(), sp.getDay());
 
         if (cult == null) {
@@ -81,7 +80,7 @@ public class MeetingsService implements IService {
      * */
 
     @Override
-    public void delete(SplitedDate dto) {
+    public void delete(DataParameterWrapper dto) {
         return;
     }
 

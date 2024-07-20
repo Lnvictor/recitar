@@ -7,7 +7,7 @@ import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.repositories.RecitativosCountRepository;
 import com.br.ccbrec.repositories.YouthCultRepository;
 import com.br.ccbrec.util.DateUtils;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class RecitativosCountService implements IService {
     public List<RecitativosCountDTO> getCountsByDate(String month, String year) {
         month = DateUtils.normalizeDayOrMonth(month);
 
-        List<RecitativosCount> countList = this.repository.findByYearAndMonth(year.trim(), month.trim());
+        List<RecitativosCount> countList = this.repository.findByYearAndMonth(year, month);
         List<RecitativosCountDTO> output = new ArrayList<>();
 
         countList.forEach(
@@ -49,8 +49,9 @@ public class RecitativosCountService implements IService {
 
     public DTO add(DTO dto) {
         RecitativosCountDTO count = (RecitativosCountDTO) dto;
-        SplitedDate splitedDate = DateUtils.splitRecitativosDate(count.getDate());
-        boolean dateExists = this.dateExists(splitedDate.getDay(), splitedDate.getMonth(), splitedDate.getYear());
+        DataParameterWrapper params = DateUtils.splitRecitativosDate(count.getDate());
+
+        boolean dateExists = this.dateExists(params);
 
         if (dateExists) {
             this.update(count);
@@ -61,7 +62,7 @@ public class RecitativosCountService implements IService {
         //TODO: See how  to implement weekday validation
 
         RecitativosCount entityCount = count.toEntity();
-        YouthCult cult = this.cultService.cultExists(splitedDate.getYear(), splitedDate.getMonth(), splitedDate.getDay());
+        YouthCult cult = this.cultService.cultExists(params);
 
         if (cult == null) {
             this.cultRepository.save(entityCount.getYouthCult());
@@ -74,11 +75,10 @@ public class RecitativosCountService implements IService {
         return count;
     }
 
-    private boolean dateExists(String day, String month, String year) {
-        month = DateUtils.normalizeDayOrMonth(month);
-        day = DateUtils.normalizeDayOrMonth(day);
+    private boolean dateExists(DataParameterWrapper params) {
+        RecitativosCount count = this.repository.findByYearAndMonthAndDay(params.getYear(), params.getMonth(),
+                params.getDay());
 
-        RecitativosCount count = this.repository.findByYearAndMonthAndDay(year, month, day);
         return count != null;
     }
 
@@ -86,9 +86,9 @@ public class RecitativosCountService implements IService {
     public void update(DTO dto) {
         RecitativosCountDTO countDto = (RecitativosCountDTO) dto;
 
-        SplitedDate splitedDate = DateUtils.splitRecitativosDate(countDto.getDate());
+        DataParameterWrapper dataParameterWrapper = DateUtils.splitRecitativosDate(countDto.getDate());
         RecitativosCount count = this.repository.findByYearAndMonthAndDay(
-                splitedDate.getYear(), splitedDate.getMonth(), splitedDate.getDay());
+                dataParameterWrapper.getYear(), dataParameterWrapper.getMonth(), dataParameterWrapper.getDay());
 
         count.setBoys(countDto.getBoys());
         count.setGirls(countDto.getGirls());
@@ -97,13 +97,12 @@ public class RecitativosCountService implements IService {
         count.setIndividuals(countDto.getIndividuals());
 
         this.repository.save(count);
-        this.repository.save(count);
     }
 
     @Override
-    public void delete(SplitedDate splitedDate) {
+    public void delete(DataParameterWrapper dataParameterWrapper) {
         RecitativosCount deletionCandidate = this.repository.findByYearAndMonthAndDay(
-                splitedDate.getYear(), splitedDate.getMonth(), splitedDate.getDay());
+                dataParameterWrapper.getYear(), dataParameterWrapper.getMonth(), dataParameterWrapper.getDay());
 
         if (deletionCandidate != null) {
             this.repository.delete(deletionCandidate);
