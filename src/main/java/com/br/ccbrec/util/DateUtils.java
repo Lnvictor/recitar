@@ -1,105 +1,66 @@
 package com.br.ccbrec.util;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DateUtils {
 
-    /**
-     * Splits date (yyyy-mm-dd) into a SplitedDate instance: (day->dd | month->mm | year-yyyy)
-     *
-     * @param date: 01/01/2024
-     * @return SplitedDate
-     */
-    public static SplitedDate splitRecitativosDate(String date) {
-        String day = DateUtils.normalizeDayOrMonth(date.substring(8, 10));
-        String month = DateUtils.normalizeDayOrMonth(date.substring(6, 7));
-        String year = date.substring(0, 4);
+    public static DataParameterWrapper  splitRecitativosDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
 
-        return new SplitedDate(day, month, year);
+        return prepareDataParameter(localDate);
+    }
+
+    public static DataParameterWrapper prepareDataParameter(LocalDate date) {
+        String day = normalizeDayOrMonth(String.valueOf(date.getDayOfMonth()));
+        String month = normalizeDayOrMonth(String.valueOf(date.getMonth().getValue()));
+        String year = String.valueOf(date.getYear());
+
+        return new DataParameterWrapper(day, month, year);
     }
 
     public static String normalizeDayOrMonth(String piece) {
+        piece = piece.trim();
+
         if (piece.length() < 2) {
             piece = String.format("0%s", piece);
         }
         return piece;
     }
 
-    /**
-     *
-     * Get day, month, year and returns A SplitedDate instance with an add of (n) days
-     *
-     * @param year: 2024
-     * @param month: 04
-     * @param day: 12
-     * @param days: 7
-     * @return Splited date
-     */
-    public static SplitedDate addDays(String year, String month, String day, int days){
-        int yearInt = Integer.parseInt(year);
-        int monthInt = Integer.parseInt(month);
-        int dayInt = Integer.parseInt(day);
-
-        Calendar calendar = new GregorianCalendar(yearInt, monthInt, dayInt);
-        calendar.add(Calendar.DAY_OF_WEEK, days);
-
-        return new SplitedDate(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
-                String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.YEAR)));
-    }
-
-    /**
-     * Transforms a brDate ( dd/mm/yyyy ) into ( yyyy-mm-dd )
-     *
-     * @param brDate
-     * @return String
-     */
     public static String transformBrIntoPattern(String brDate) {
-        String day = DateUtils.normalizeDayOrMonth(brDate.substring(0, 2));
-        String month = DateUtils.normalizeDayOrMonth(brDate.substring(3, 5));
-        String year = brDate.substring(6);
+        DateTimeFormatter brFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter usFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(brDate, brFormatter);
 
-        return year + "-" + month + "-" + day;
+        return date.format(usFormatter);
     }
 
-    /**
-     *
-     * Get Splited date and return String date representation in BR pattern (dd/mm/yyyy)
-     *
-     * @param year
-     * @param month
-     * @param day
-     * @return String
-     */
-    public static String transformSplitedDateIntoStr(String year, String month, String day) {
+    public static String transformWrapperDateIntoStr(String year, String month, String day) {
         return String.format("%s/%s/%s", day, month, year);
     }
 
-    /**
-     *
-     * Method useful to sort a Collection by a increasing order by date
-     *
-     * Due the fact we arte dealing with custom date class (SplitedDate) we should implement our
-     * custom Comparator
-     *
-     * @param date1
-     * @param date2
-     * @return int
-     */
     public static int compareDate(String date1, String date2) {
-        SplitedDate sp = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date1));
-        SplitedDate sp2 = DateUtils.splitRecitativosDate(DateUtils.transformBrIntoPattern(date2));
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate first = LocalDate.parse(date1, dateTimeFormatter);
+        LocalDate second =  LocalDate.parse(date2, dateTimeFormatter);
 
-        return DateUtils.compareSplitedDate(sp, sp2);
+        return first.compareTo(second);
     }
 
-    public static int compareSplitedDate(SplitedDate sp, SplitedDate sp2) {
-        Calendar c1 = Calendar.getInstance();
-        c1.set(Integer.parseInt(sp.getYear()), Integer.parseInt(sp.getMonth()), Integer.parseInt(sp.getDay()));
+    public static int compareDateWrapper(DataParameterWrapper wrapper, DataParameterWrapper wrapper2) {
+        LocalDate lDate1 = getLocalDateFromWrapper(wrapper);
+        LocalDate lDate2 = getLocalDateFromWrapper(wrapper2);
 
-        Calendar c2 = Calendar.getInstance();
-        c2.set(Integer.parseInt(sp2.getYear()), Integer.parseInt(sp2.getMonth()), Integer.parseInt(sp2.getDay()));
+        return lDate1.compareTo(lDate2);
+    }
 
-        return c1.compareTo(c2);
+    public static LocalDate getLocalDateFromWrapper(DataParameterWrapper wrapper){
+        int day = Integer.parseInt(wrapper.getDay());
+        int month = Integer.parseInt(wrapper.getMonth());
+        int year = Integer.parseInt(wrapper.getYear());
+
+        return LocalDate.of(year, month, day);
     }
 }

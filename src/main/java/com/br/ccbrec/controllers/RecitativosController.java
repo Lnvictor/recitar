@@ -7,7 +7,7 @@ import com.br.ccbrec.services.AuthService;
 import com.br.ccbrec.services.ProfileService;
 import com.br.ccbrec.services.RecitativoService;
 import com.br.ccbrec.util.DateUtils;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,7 +62,7 @@ public class RecitativosController {
         }
 
         RecitativosDTO recDto = (RecitativosDTO) this.service.add(dto);
-        SplitedDate sp = DateUtils.splitRecitativosDate(recDto.getDate());
+        DataParameterWrapper sp = DateUtils.splitRecitativosDate(recDto.getDate());
 
         return String.format("redirect:/web/recitativos?year=%s&month=%s&order=%s&side=%s", sp.getYear(),
                 sp.getMonth(), recDto.getOrder(), recDto.getSide());
@@ -74,7 +74,7 @@ public class RecitativosController {
             return "recitativos/index";
         }
 
-        SplitedDate sp = DateUtils.splitRecitativosDate(recDto.getDate());
+        DataParameterWrapper sp = DateUtils.splitRecitativosDate(recDto.getDate());
         this.service.update(recDto);
 
         return String.format("redirect:/web/recitativos?year=%s&month=%s&order=%s&side=%s", sp.getYear(),
@@ -83,7 +83,7 @@ public class RecitativosController {
 
     @GetMapping("/delete")
     public String deleteRecitativos(Model model, String date) {
-        SplitedDate sp = DateUtils.splitRecitativosDate(date);
+        DataParameterWrapper sp = DateUtils.splitRecitativosDate(date);
         this.service.delete(sp);
 
         return String.format("redirect:/web/recitativos?year=%s&month=%s&order=%s&side=%s", sp.getYear(),

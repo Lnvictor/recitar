@@ -4,7 +4,7 @@ import com.br.ccbrec.dto.DTO;
 import com.br.ccbrec.dto.YouthCultDTO;
 import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.repositories.YouthCultRepository;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,10 @@ public class YouthCultService implements IService{
     @Autowired
     private YouthCultRepository cultRepository;
 
-    public YouthCult cultExists(String year, String month, String day) {
-        if (year == null || month == null || day == null) return null;
-
+    public YouthCult cultExists(DataParameterWrapper dataParameterWrapper) {
+        String day = dataParameterWrapper.getDay();
+        String year = dataParameterWrapper.getYear();
+        String month = dataParameterWrapper.getMonth();
 
         return this.cultRepository.findByYearAndMonthAndDay(year, month, day);
     }
@@ -30,9 +31,9 @@ public class YouthCultService implements IService{
     }
 
     @Override
-    public void delete(SplitedDate splitedDate) {
-        YouthCult yc = this.cultRepository.findByYearAndMonthAndDay(splitedDate.getYear(), splitedDate.getMonth(),
-                splitedDate.getDay());
+    public void delete(DataParameterWrapper dataParameterWrapper) {
+        YouthCult yc = this.cultRepository.findByYearAndMonthAndDay(dataParameterWrapper.getYear(), dataParameterWrapper.getMonth(),
+                dataParameterWrapper.getDay());
 
         this.cultRepository.delete(yc);
     }

@@ -7,7 +7,7 @@ import com.br.ccbrec.entities.User;
 import com.br.ccbrec.enums.RoleName;
 import com.br.ccbrec.repositories.RolesRepository;
 import com.br.ccbrec.repositories.UsersRepository;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -63,7 +63,7 @@ public class AuthService implements IService{
     }
 
     @Override
-    public void delete(SplitedDate dto) {
+    public void delete(DataParameterWrapper dto) {
 
     }
 

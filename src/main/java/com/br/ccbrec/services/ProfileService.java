@@ -6,7 +6,7 @@ import com.br.ccbrec.entities.ProfileSpecification;
 import com.br.ccbrec.enums.RoleName;
 import com.br.ccbrec.repositories.ProfileSpecificationRepository;
 import com.br.ccbrec.repositories.UsersRepository;
-import com.br.ccbrec.util.SplitedDate;
+import com.br.ccbrec.util.DataParameterWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,7 +55,7 @@ public class ProfileService implements IService {
     }
 
     @Override
-    public void delete(SplitedDate splitedDate) {
+    public void delete(DataParameterWrapper dataParameterWrapper) {
         throw new RuntimeException("Not Implemented");
     }
 
