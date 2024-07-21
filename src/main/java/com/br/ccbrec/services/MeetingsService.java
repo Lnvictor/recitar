@@ -8,18 +8,16 @@ import com.br.ccbrec.repositories.AuxiliaresMeetingRepository;
 import com.br.ccbrec.repositories.YouthCultRepository;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.DataParameterWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class MeetingsService implements IService {
-    @Autowired
     private AuxiliaresMeetingRepository repository;
-
-    @Autowired
     private YouthCultRepository cultRepository;
 
     public List<AuxiliaresMeetingDTO> getRealizedMeetings(String year) {
@@ -31,7 +29,7 @@ public class MeetingsService implements IService {
                 }
         ).collect(Collectors.toList());
 
-            Collections.sort(dtos, (o1, o2) -> DateUtils.compareDate(o1.getDate(), o2.getDate()));
+        Collections.sort(dtos, (o1, o2) -> DateUtils.compareDate(o1.getDate(), o2.getDate()));
 
         return dtos;
     }
@@ -76,7 +74,7 @@ public class MeetingsService implements IService {
     }
 
     /*
-     * Not Implemented YEAT
+     * Not Implemented YET
      * */
 
     @Override

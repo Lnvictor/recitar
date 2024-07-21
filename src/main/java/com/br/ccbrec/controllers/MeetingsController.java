@@ -7,6 +7,7 @@ import com.br.ccbrec.services.MeetingsService;
 import com.br.ccbrec.services.ProfileService;
 import com.br.ccbrec.services.RecitativoService;
 import com.br.ccbrec.util.DateUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,18 +18,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/web/meetings")
+@AllArgsConstructor
 public class MeetingsController {
-
-    @Autowired
     private RecitativoService recitativoService;
-
-    @Autowired
     private MeetingsService meetingsService;
-
-    @Autowired
     private AuthService authService;
-
-    @Autowired
     private ProfileService profileService;
 
     @GetMapping

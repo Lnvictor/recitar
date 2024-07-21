@@ -11,18 +11,16 @@ import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.persistence.Entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class RecitativoService implements IService {
-    @Autowired
     private RecitativosRepository repository;
-
-    @Autowired
     private YouthCultService cultService;
 
     public List<RecitativosDTO> getRecitativosByMonth() {

@@ -9,6 +9,7 @@ import com.br.ccbrec.services.RecitativoService;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,15 +24,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/web/recitativos")
+@AllArgsConstructor
 public class RecitativosController {
-
-    @Autowired
     private AuthService authService;
-
-    @Autowired
     private RecitativoService service;
-
-    @Autowired
     private ProfileService profileService;
 
     @GetMapping

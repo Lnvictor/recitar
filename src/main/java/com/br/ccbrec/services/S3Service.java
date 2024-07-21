@@ -3,10 +3,8 @@ package com.br.ccbrec.services;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,31 +14,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class S3Service {
     @Value("${aws.bucketName}")
     private String bucketName;
-
-    @Autowired
-    private AmazonS3 s3Client;
-
-    public List<String> listBucketFiles() {
-        ObjectListing s = s3Client.listObjects(bucketName);
-        List<String> fileNames = new ArrayList<>();
-
-        for (S3ObjectSummary q : s.getObjectSummaries()) {
-            GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, q.getKey())
-                    .withMethod(HttpMethod.GET);
-            URL url = s3Client.generatePresignedUrl(request);
-            fileNames.add(q.getKey());
-        }
-
-        return fileNames;
-    }
+    private final AmazonS3 s3Client;
 
     public String getPresignedUrlByKey(String key) {
         Calendar expiresAt = Calendar.getInstance();

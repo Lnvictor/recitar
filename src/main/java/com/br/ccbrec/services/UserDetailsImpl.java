@@ -3,7 +3,7 @@ package com.br.ccbrec.services;
 import com.br.ccbrec.entities.User;
 import com.br.ccbrec.repositories.UsersRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class UserDetailsImpl implements UserDetailsService {
-    @Autowired
     private UsersRepository repository;
 
     @Override

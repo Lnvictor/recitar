@@ -3,6 +3,7 @@ package com.br.ccbrec.controllers;
 import com.br.ccbrec.dto.DTO;
 import com.br.ccbrec.dto.ProfileDTO;
 import com.br.ccbrec.services.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
+@AllArgsConstructor
 public class ProfileController {
-    @Autowired
     private ProfileService service;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
