@@ -8,7 +8,7 @@ import com.br.ccbrec.enums.RoleName;
 import com.br.ccbrec.repositories.RolesRepository;
 import com.br.ccbrec.repositories.UsersRepository;
 import com.br.ccbrec.util.DataParameterWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
@@ -17,12 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AuthService implements IService{
-
-    @Autowired
+@AllArgsConstructor
+public class AuthService implements IService {
     private UsersRepository usersRepository;
-
-    @Autowired
     private RolesRepository rolesRepository;
 
     public RoleName getMostPrivileges(SecurityContext context) {
@@ -36,7 +33,7 @@ public class AuthService implements IService{
                 return RoleName.ROLE_ADMIN;
             }
 
-            if (mostPrivileged.equals(RoleName.ROLE_READER) && rn.equals(RoleName.ROLE_AUXILIAR)){
+            if (mostPrivileged.equals(RoleName.ROLE_READER) && rn.equals(RoleName.ROLE_AUXILIAR)) {
                 mostPrivileged = RoleName.ROLE_AUXILIAR;
             }
         }

@@ -9,6 +9,7 @@ import com.br.ccbrec.services.RecitativosCountService;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,14 +21,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/web/ccbrec")
+@AllArgsConstructor
 public class ContagemController {
-    @Autowired
     private RecitativosCountService service;
-
-    @Autowired
     private AuthService authService;
-
-    @Autowired
     private ProfileService profileService;
 
     @RequestMapping(method = RequestMethod.GET)

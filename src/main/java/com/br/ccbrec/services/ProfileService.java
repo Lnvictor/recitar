@@ -7,7 +7,7 @@ import com.br.ccbrec.enums.RoleName;
 import com.br.ccbrec.repositories.ProfileSpecificationRepository;
 import com.br.ccbrec.repositories.UsersRepository;
 import com.br.ccbrec.util.DataParameterWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,17 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Calendar;
 
 @Service
+@AllArgsConstructor
 public class ProfileService implements IService {
-    @Autowired
     private ProfileSpecificationRepository repository;
-
-    @Autowired
     private UsersRepository usersRepository;
-
-    @Autowired
     private S3Service s3Service;
-
-    @Autowired
     private AuthService authService;
 
     @Override
@@ -48,7 +42,7 @@ public class ProfileService implements IService {
 
         spec.setProfilePhotoUrl(preSignedUrl);
         spec.setPhotoUrlGeneratedAt(Calendar.getInstance());
-        spec.setProfilePhotoImageName(file.getOriginalFilename());
+        spec.setProfilePhotoImageName(filename);
         this.repository.save(spec);
 
         return dto;

@@ -9,7 +9,7 @@ import com.br.ccbrec.repositories.YouthCultRepository;
 import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,15 +19,10 @@ import java.util.*;
  */
 @Transactional
 @Service
+@AllArgsConstructor
 public class RecitativosCountService implements IService {
-
-    @Autowired
     private RecitativosCountRepository repository;
-
-    @Autowired
     private YouthCultRepository cultRepository;
-
-    @Autowired
     private YouthCultService cultService;
 
     public List<RecitativosCountDTO> getCountsByDate(String month, String year) {

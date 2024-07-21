@@ -5,13 +5,12 @@ import com.br.ccbrec.dto.YouthCultDTO;
 import com.br.ccbrec.entities.YouthCult;
 import com.br.ccbrec.repositories.YouthCultRepository;
 import com.br.ccbrec.util.DataParameterWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class YouthCultService implements IService{
-
-    @Autowired
     private YouthCultRepository cultRepository;
 
     public YouthCult cultExists(DataParameterWrapper dataParameterWrapper) {
