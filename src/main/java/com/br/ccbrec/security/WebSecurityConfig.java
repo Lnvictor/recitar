@@ -38,7 +38,14 @@ public class WebSecurityConfig {
 
                             requests.requestMatchers(HttpMethod.GET, "/web/meetings/add")
                                             .hasAnyAuthority("ROLE_ADMIN");
+                            requests.requestMatchers(HttpMethod.GET, "/web/settings")
+                                    .hasAnyAuthority("ROLE_ADMIN", "ROLE_AUXILIAR");
+                            requests.requestMatchers(HttpMethod.POST, "/web/settings/addUser")
+                                    .hasAnyAuthority("ROLE_ADMIN");
+                            requests.requestMatchers(HttpMethod.POST, "/web/settings/change")
+                                    .hasAnyAuthority("ROLE_ADMIN");
                             requests.anyRequest().authenticated();
+
                         }
                 )
                 .formLogin((form) -> {
