@@ -10,7 +10,6 @@ import com.br.ccbrec.util.DateUtils;
 import com.br.ccbrec.util.DataParameterWrapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +32,8 @@ public class RecitativosController {
     @GetMapping
     public String recitativos(Model model, String year, String month, int order, String side) {
         ProfileDTO profileDTO = profileService.getProfileLogged(SecurityContextHolder.getContext());
-        String mostPrivilegedUserRole = this.authService.getMostPrivileges(SecurityContextHolder.getContext()).toString();
+        String mostPrivilegedUserRole = this.authService.getMostPrivileges(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).toString();
         RecitativosSide sideEnum = side.equalsIgnoreCase("MAN") ? RecitativosSide.MAN : RecitativosSide.WOMEN;
         List<RecitativosDTO> dtos = this.service.getRecitativosByDateAndFilters(year, month, order, sideEnum);
 

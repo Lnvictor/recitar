@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: head}">
+    <style>
+        .btn-login {
+            background-color: <div id="0079bf">   </div>;
+            border-color: #0079bf;
+        }
+
+        .btn-login:hover {
+            background-color: #005a85;
+            border-color: #005a85;
+        }
+    </style>
+</head>
+
+<body>
+<nav th:replace="~{common :: nav}"></nav>
+<br>
+<div class="container">
+    <h2 class="mb-4 text-center">Listagem de Usuários</h2>
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Nome</th>
+            <th>Tipo Usuario</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user: ${users}">
+            <td th:id="'username-' + ${user.getUsername()}" th:text="${user.getUsername()}"></td>
+            <td th:id="'role-' + ${user.getUsername()}" th:text="${user.getMostPrivilege().toString()}"></td>
+            <td>
+                <button class="btn btn-primary btn-sm" th:data-username="${user.getUsername()}"
+                        th:data-userrole="${user.getMostPrivilege().toString()}" th:onclick="handleRoleChangeRequest(this.getAttribute('data-username'), this.getAttribute('data-userrole'), 'UP')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+                    </svg>
+                </button>
+                <button class="btn btn-warning btn-sm" th:data-username="${user.getUsername()}"
+                        th:data-userrole="${user.getMostPrivilege().toString()}" th:onclick="handleRoleChangeRequest(this.getAttribute('data-username'), this.getAttribute('data-userrole'), 'DOWN')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                    </svg>
+                </button>
+                <button class="btn btn-danger btn-sm"  th:data-username="${user.getUsername()}"
+                        th:data-userrole="${user.getMostPrivilege().toString()}" th:onclick="handleRoleChangeRequest(this.getAttribute('data-username'), this.getAttribute('data-userrole'), 'DELETE')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                    </svg>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form id="form-change-role-user" hidden="true" th:action="@{settings/change}" th:method="POST">
+        <input name="username" id="role-form-username" type="text">
+        <input name="role" id="role-form-role" type="text">
+        <input name="operation" id="role-form-operation" type="text">
+        <button id="role-form-submit" type="submit"></button>
+    </form>
+
+    <button class="btn btn-secondary btn-sm" th:onclick="'toggleAddUser()'">Adicionar usuario</button>
+
+    <form id="form-add-user" style="display: none" th:if="${mostPrivilege.toString().equals('ROLE_ADMIN')}"
+        method="post" th:action="@{/web/settings/addUser}">
+        <label for="username">Username</label>
+        <input id="username" class="form-control w-25" name="username" type="text">
+
+        <label for="password">Password</label>
+        <input id="password" class="form-control w-25" name="password" type="password">
+
+        <label for="mostPrivilege">Role</label>
+        <br>
+        <select class="custom-select custom-select-sm w-25" id="mostPrivilege" name="mostPrivilege">
+            <option value="ROLE_ADMIN">Administrador</option>
+            <option value="ROLE_AUXILIAR">Auxiliar de Jovens</option>
+            <option value="ROLE_READER">Leitura</option>
+        </select>
+        <br><br>
+        <button type="submit" class="btn btn-primary btn-login">Salvar</button>
+    </form>
+</div>
+</body>
+</html>
