@@ -113,3 +113,23 @@ function newMeetingAddParticipant(){
     }
     textArea.innerHTML += selectBox[selectedAuxiliarIndex].innerHTML;
 }
+
+function handleRoleChangeRequest(username, currentRole, operation){
+    var form = document.getElementById("form-change-role-user");
+    var usernameInput = document.getElementById("role-form-username");
+    var operationInput = document.getElementById("role-form-operation");
+    var roleInput = document.getElementById("role-form-role");
+    var button = document.getElementById("role-form-submit");
+
+
+    usernameInput.value = username;
+    operationInput.value = operation;
+    roleInput.value = currentRole;
+
+    form.submit();
+}
+
+function toggleAddUser(){
+    var form = document.getElementById("form-add-user")
+    form.style.display = form.style.display === "none" ? "" : "none";
+}

@@ -8,7 +8,6 @@ import com.br.ccbrec.services.ProfileService;
 import com.br.ccbrec.services.RecitativoService;
 import com.br.ccbrec.util.DateUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +32,7 @@ public class MeetingsController {
 
         ProfileDTO profileDTO = profileService.getProfileLogged(SecurityContextHolder.getContext());
         List<AuxiliaresMeetingDTO> dtos = this.meetingsService.getRealizedMeetings(year);
-        String mostPrivilegedUserRole = this.authService.getMostPrivileges(SecurityContextHolder.getContext()).toString();
+        String mostPrivilegedUserRole = this.authService.getMostPrivileges(SecurityContextHolder.getContext().getAuthentication().getName()).toString();
 
         model.addAttribute("username", profileDTO.getUsername());
         model.addAttribute("profilePhotoUrl", profileDTO.getImage());

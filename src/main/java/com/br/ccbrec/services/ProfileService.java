@@ -60,7 +60,7 @@ public class ProfileService implements IService {
 
     public ProfileDTO getProfileLogged(SecurityContext context) {
         String username = context.getAuthentication().getName();
-        RoleName role = authService.getMostPrivileges(context);
+        RoleName role = authService.getMostPrivileges(context.getAuthentication().getName());
 
         ProfileSpecification spec = this.repository.getByUsername(username);
         String photo = "";
