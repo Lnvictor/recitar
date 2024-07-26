@@ -73,11 +73,12 @@ public class ProfileService implements IService {
 
             if (Calendar.getInstance().after(expiredAt)) {
                 spec.setProfilePhotoUrl(this.s3Service.getPresignedUrlByKey(spec.getProfilePhotoImageName()));
+                spec.setPhotoUrlGeneratedAt(Calendar.getInstance());
             }
 
             photo = spec.getProfilePhotoUrl();
+            this.repository.save(spec);
         }
         return new ProfileDTO(username, role.getValue(), photo);
     }
-
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping(value = "web/profile")
+@RequestMapping(value = "/web/profile")
 @AllArgsConstructor
 public class ProfileController {
     private ProfileService service;
@@ -34,6 +34,6 @@ public class ProfileController {
         service.add(dto);
 
         model.addAttribute("dto", dto);
-        return "redirect:/profile";
+        return "redirect:/web/profile";
     }
 }

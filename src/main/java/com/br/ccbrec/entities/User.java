@@ -30,9 +30,6 @@ public class User implements UserDetails {
     @JoinTable(name = "user_roles")
     private List<Roles> roles;
 
-    @Column(name = "enabled", nullable = false)
-    private Boolean enabled = true;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;

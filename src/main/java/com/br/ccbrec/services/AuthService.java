@@ -102,7 +102,7 @@ public class AuthService implements IService {
         Roles r = this.rolesRepository.findByRoleName(rn);
 
         if (r != null) {
-            User userClone = new User(user.getId(), user.getUsername(), user.getPassword(), List.of(r), true);
+            User userClone = new User(user.getId(), user.getUsername(), user.getPassword(), List.of(r));
             this.usersRepository.save(userClone);
             return true;
         }
